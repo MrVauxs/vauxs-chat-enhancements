@@ -30,7 +30,7 @@
 <div class="vce vce-main-div">
    <div class="border border-foundry-border-light-primary rounded-md p-0.5 my-1">
       <div class="grid-cols-6 grid gap-1 h-8">
-         <div id="icon" class="col-span-1 ml-0.5">
+         <div id="icon" class="col-span-1 ml-0.5 hover:scale-110 transition-transform">
             <img src={$speaker.img} alt={$speaker.alias} class="w-8 h-8" style="transform: scale({$speaker.scale});" />
          </div>
          <div
@@ -42,8 +42,10 @@
             {$speaker.alias}
          </div>
          <div class="col-span-1 flex">
-            <button id="settings" class="w-1/2"> <IconSettings class="w-full" /> </button>
-            <button id="options" class="w-1/2"> <IconDots class="w-full" /> </button>
+            <button id="settings" class="w-1/2 hover:bg-foundry-checkbox-checked">
+               <IconSettings class="w-full" />
+            </button>
+            <button id="options" class="w-1/2 hover:bg-foundry-checkbox-checked"> <IconDots class="w-full" /> </button>
          </div>
       </div>
    </div>
@@ -52,6 +54,6 @@
 <style>
    .vce-main-div {
       flex: 0;
-      margin: -3px 6px 0;
+      margin: 0 6px;
    }
 </style>
