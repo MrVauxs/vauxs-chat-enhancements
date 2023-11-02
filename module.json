@@ -1,0 +1,42 @@
+{
+  "id": "vauxs-chat-enhancements",
+  "title": "Vauxs' Chat Enhancements",
+  "description": "Opinionated chat enhancements for Foundry VTT. Made for Play-by-Text sessions.",
+  "version": "This is replaced",
+  "authors": [
+    {
+      "name": "Vauxs",
+      "url": "https://mrvauxs.net",
+      "discord": "vauxs"
+    }
+  ],
+  "compatibility": {
+    "minimum": "11",
+    "verified": "11"
+  },
+  "esmodules": [
+    "index.js"
+  ],
+  "styles": [
+    "style.css"
+  ],
+  "flags": {
+    "hotReload": {
+      "extensions": ["json"],
+      "paths": ["lang"]
+    }
+  },
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    }
+  ],
+  "url": "https://github.com/mrvauxs/vauxs-chat-enhancements",
+  "readme": "https://github.com/mrvauxs/vauxs-chat-enhancements/blob/master/README.md",
+  "bugs": "https://github.com/mrvauxs/vauxs-chat-enhancements/issues",
+  "changelog": "https://github.com/mrvauxs/vauxs-chat-enhancements/releases/latest/",
+  "manifest": "https://github.com/mrvauxs/vauxs-chat-enhancements/releases/latest/download/module.json",
+  "download": "https://github.com/mrvauxs/vauxs-chat-enhancements/releases/latest/download/module.zip"
+}
