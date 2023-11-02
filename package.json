@@ -21,6 +21,7 @@
     "svelte": "^4.2.0"
   },
   "devDependencies": {
+    "@iconify-json/tabler": "^1.1.96",
     "@sveltejs/vite-plugin-svelte": "^2.4.2",
     "@typhonjs-config/eslint-config": "^0.6.0",
     "@typhonjs-fvtt/eslint-config-foundry.js": "^0.8.0",
@@ -30,6 +31,7 @@
     "postcss-load-config": "^4.0.1",
     "svelte-preprocess": "^5",
     "tailwindcss": "^3.3.2",
+    "unplugin-icons": "^0.17.3",
     "vite": "^4.4.0"
   },
   "browserslist": [
