@@ -8,10 +8,7 @@
 {
   // ESLint configs are prone to particular choices, so if the first config below doesn't work for you then replace
   // with one that you do prefer. The second config defines globals defined in `foundry.js` for use w/ `no-shadow`.
-  "extends": [
-    "@typhonjs-config/eslint-config/esm/2022/browser",
-    "@typhonjs-fvtt/eslint-config-foundry.js"
-  ],
+  "extends": ["@typhonjs-config/eslint-config/esm/2022/browser", "@typhonjs-fvtt/eslint-config-foundry.js"],
 
   // Defines / overrides a few more environment parameters not provided in the configs above.
   "env": {
@@ -24,17 +21,16 @@
   //
   // Note: if you are using Typescript you must use `@typescript-eslint/no-shadow`
   "rules": {
-    "no-shadow": ["error", {
-      "builtinGlobals": true,
-      "hoist": "all",
-      "allow": [
-        "document",
-        "event",
-        "name",
-        "parent",
-        "status",
-        "top"
-      ]
-    }]
+    "curly": ["error", "multi-line"],
+    "brace-style": ["error", "1tbs", { "allowSingleLine": true }],
+    "no-shadow": [
+      "error",
+      {
+        "builtinGlobals": true,
+        "hoist": "all",
+        "allow": ["document", "event", "name", "parent", "status", "top"]
+      }
+    ]
   }
 }
+
