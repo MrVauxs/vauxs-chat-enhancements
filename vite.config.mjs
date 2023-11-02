@@ -1,49 +1,57 @@
-import { svelte }    from '@sveltejs/vite-plugin-svelte';
-import resolve       from '@rollup/plugin-node-resolve'; // This resolves NPM modules from node_modules.
-import preprocess    from 'svelte-preprocess';
-import {
-   postcssConfig,
-   terserConfig }    from '@typhonjs-fvtt/runtime/rollup';
+import { svelte } from "@sveltejs/vite-plugin-svelte";
+import resolve from "@rollup/plugin-node-resolve"; // This resolves NPM modules from node_modules.
+import preprocess from "svelte-preprocess";
+import { postcssConfig, terserConfig } from "@typhonjs-fvtt/runtime/rollup";
+import autoprefixer from "autoprefixer";
+import tailwindcss from "tailwindcss";
 
 // ATTENTION!
 // Please modify the below variables: s_PACKAGE_ID and s_SVELTE_HASH_ID appropriately.
 
 // For convenience, you just need to modify the package ID below as it is used to fill in default proxy settings for
 // the dev server.
-const s_PACKAGE_ID = 'modules/vauxs-chat-enhancements';
+const s_PACKAGE_ID = "modules/vauxs-chat-enhancements";
 
 // A short additional string to add to Svelte CSS hash values to make yours unique. This reduces the amount of
 // duplicated framework CSS overlap between many TRL packages enabled on Foundry VTT at the same time. 'tse' is chosen
 // by shortening 'template-svelte-esm'.
-const s_SVELTE_HASH_ID = 'vce';
+const s_SVELTE_HASH_ID = "vce";
 
-const s_COMPRESS = true;  // Set to true to compress the module bundle.
+const s_COMPRESS = true; // Set to true to compress the module bundle.
 const s_SOURCEMAPS = true; // Generate sourcemaps for the bundle (recommended).
 
 // Used in bundling particularly during development. If you npm-link packages to your project add them here.
 const s_RESOLVE_CONFIG = {
    browser: true,
-   dedupe: ['svelte']
+   dedupe: ["svelte"],
 };
 
-export default () =>
-{
+export default () => {
    /** @type {import('vite').UserConfig} */
    return {
-      root: 'src/',                 // Source location / esbuild root.
-      base: `/${s_PACKAGE_ID}/`,    // Base module path that 30001 / served dev directory.
-      publicDir: false,             // No public resources to copy.
-      cacheDir: '../.vite-cache',   // Relative from root directory.
+      root: "src/", // Source location / esbuild root.
+      base: `/${s_PACKAGE_ID}/`, // Base module path that 30001 / served dev directory.
+      publicDir: false, // No public resources to copy.
+      cacheDir: "../.vite-cache", // Relative from root directory.
 
-      resolve: { conditions: ['import', 'browser'] },
+      resolve: { conditions: ["import", "browser"] },
 
       esbuild: {
-         target: ['es2022']
+         target: ["es2022"],
       },
 
       css: {
          // Creates a standard configuration for PostCSS with autoprefixer & postcss-preset-env.
-         postcss: postcssConfig({ compress: s_COMPRESS, sourceMap: s_SOURCEMAPS })
+         postcss: postcssConfig({
+            compress: s_COMPRESS,
+            sourceMap: s_SOURCEMAPS,
+            plugins: [
+               // Some plugins, like tailwindcss/nesting, need to run before Tailwind,
+               tailwindcss(),
+               // But others, like autoprefixer, need to run after,
+               autoprefixer,
+            ],
+         }),
       },
 
       // About server options:
@@ -57,17 +65,17 @@ export default () =>
       // static resources / project.
       server: {
          port: 30011,
-         open: '/game',
+         open: "/game",
          proxy: {
             // Serves static files from main Foundry server.
-            [`^(/${s_PACKAGE_ID}/(assets|lang|packs|style.css))`]: 'http://localhost:30001',
+            [`^(/${s_PACKAGE_ID}/(assets|lang|packs|style.css))`]: "http://localhost:30001",
 
             // All other paths besides package ID path are served from main Foundry server.
-            [`^(?!/${s_PACKAGE_ID}/)`]: 'http://localhost:30001',
+            [`^(?!/${s_PACKAGE_ID}/)`]: "http://localhost:30001",
 
             // Enable socket.io from main Foundry server.
-            '/socket.io': { target: 'ws://localhost:30001', ws: true }
-         }
+            "/socket.io": { target: "ws://localhost:30001", ws: true },
+         },
       },
 
       build: {
@@ -75,21 +83,21 @@ export default () =>
          emptyOutDir: false,
          sourcemap: s_SOURCEMAPS,
          brotliSize: true,
-         minify: s_COMPRESS ? 'terser' : false,
-         target: ['es2022'],
+         minify: s_COMPRESS ? "terser" : false,
+         target: ["es2022"],
          terserOptions: s_COMPRESS ? { ...terserConfig(), ecma: 2022 } : void 0,
          lib: {
-            entry: './index.js',
-            formats: ['es'],
-            fileName: 'index'
-         }
+            entry: "./index.js",
+            formats: ["es"],
+            fileName: "index",
+         },
       },
 
       // Necessary when using the dev server for top-level await usage inside TRL.
       optimizeDeps: {
          esbuildOptions: {
-            target: 'es2022'
-         }
+            target: "es2022",
+         },
       },
 
       plugins: [
@@ -99,13 +107,13 @@ export default () =>
                // This is reasonable to do as the framework styles in TRL compiled across `n` different packages will
                // be the same. Slightly modifying the hash ensures that your package has uniquely scoped styles for all
                // TRL components and makes it easier to review styles in the browser debugger.
-               cssHash: ({ hash, css }) => `svelte-${s_SVELTE_HASH_ID}-${hash(css)}`
+               cssHash: ({ hash, css }) => `svelte-${s_SVELTE_HASH_ID}-${hash(css)}`,
             },
-            preprocess: preprocess()
+            preprocess: preprocess(),
          }),
 
-         resolve(s_RESOLVE_CONFIG)  // Necessary when bundling npm-linked packages.
-      ]
+         resolve(s_RESOLVE_CONFIG), // Necessary when bundling npm-linked packages.
+      ],
    };
 };
 
