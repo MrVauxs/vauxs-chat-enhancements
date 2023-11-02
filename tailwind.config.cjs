@@ -6,7 +6,7 @@ const config = {
     extend: {
       colors: {
         foundry: {
-          button: "rgba(255, 255, 240, 0.8)",
+          "button-background": "rgba(255, 255, 240, 0.8)",
           "text-light-highlight": "var(--color-text-light-highlight)",
           "text-light-heading": "var(--color-text-light-heading)",
           "text-light-primary": "var(--color-text-light-primary)",
