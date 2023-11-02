@@ -9,4 +9,5 @@ const config = {
   plugins: [],
 };
 
+// eslint-disable-next-line no-undef
 module.exports = config;
