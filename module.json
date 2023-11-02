@@ -15,7 +15,7 @@
     "verified": "11"
   },
   "esmodules": [
-    "vauxs-ce.js"
+    "index.js"
   ],
   "styles": [
     "style.css"

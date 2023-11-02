@@ -7,7 +7,7 @@ import tailwindcss from "tailwindcss";
 import postcssPresetEnv from "postcss-preset-env"; // Popular postcss plugin for next gen CSS usage.
 import cssnano from "cssnano";
 import postcssPrefixSelector from "postcss-prefix-selector";
-import Icons from 'unplugin-icons/vite';
+import Icons from "unplugin-icons/vite";
 
 // ATTENTION!
 // Please modify the below variables: s_PACKAGE_ID and s_SVELTE_HASH_ID appropriately.
@@ -96,7 +96,7 @@ export default () => {
          lib: {
             entry: "./index.js",
             formats: ["es"],
-            fileName: "vauxs-ce",
+            fileName: "index",
          },
       },
 
@@ -109,19 +109,10 @@ export default () => {
 
       plugins: [
          svelte({
-            compilerOptions: {
-               // Provides a custom hash adding the string defined in `s_SVELTE_HASH_ID` to scoped Svelte styles;
-               // This is reasonable to do as the framework styles in TRL compiled across `n` different packages will
-               // be the same. Slightly modifying the hash ensures that your package has uniquely scoped styles for all
-               // TRL components and makes it easier to review styles in the browser debugger.
-               cssHash: ({ hash, css }) => `svelte-${s_SVELTE_HASH_ID}-${hash(css)}`,
-            },
-
             preprocess: preprocess(),
          }),
 
-         Icons({ compiler: 'svelte',
-         autoInstall: true }),
+         Icons({ compiler: "svelte", autoInstall: true }),
 
          resolve(s_RESOLVE_CONFIG), // Necessary when bundling npm-linked packages.
       ],
