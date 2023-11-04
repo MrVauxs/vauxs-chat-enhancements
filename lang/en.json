@@ -1,5 +1,10 @@
 {
-  "TemplateESM": {
-    "title": "Template Svelte (ESM)"
+  "vauxs-chat-enhancements": {
+    "controls": {
+      "buttons": {
+        "lockSpeaker": "Lock Your Current Speaker",
+        "unlockSpeaker": "Unlock Your Current Speaker"
+      }
+    }
   }
 }

@@ -15,6 +15,7 @@
     "#standard/*": "@typhonjs-fvtt/svelte-standard/*"
   },
   "dependencies": {
+    "@floating-ui/dom": "^1.5.3",
     "@typhonjs-fvtt/runtime": "0.1.2",
     "@typhonjs-fvtt/svelte-standard": "0.1.0",
     "postcss-prefix-selector": "^1.16.0",

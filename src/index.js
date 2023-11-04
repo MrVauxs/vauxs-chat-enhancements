@@ -1,3 +1,9 @@
+CONFIG.VauxsChatEnhancements = {};
+
+// ==== Features ====
+import './features/getSpeakerOverride.js';
+
+// ==== Chat Controls ====
 import AboveChatControls from "./view/AboveChatControls.svelte";
 
 // eslint-disable-next-line no-unused-vars

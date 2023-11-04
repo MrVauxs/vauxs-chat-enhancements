@@ -4,6 +4,10 @@ const config = {
 
   theme: {
     extend: {
+      backgroundImage: {
+          parchment: "url(../ui/parchment.jpg)"
+
+      },
       colors: {
         foundry: {
           "button-background": "rgba(255, 255, 240, 0.8)",
