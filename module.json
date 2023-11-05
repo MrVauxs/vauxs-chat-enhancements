@@ -20,6 +20,22 @@
   "styles": [
     "style.css"
   ],
+  "relationships": {
+    "recommends": [
+			{
+				"id": "lib-wrapper",
+				"type": "module",
+				"reason": "Provides the module the ability to override your current speaker, allowing you to lock to a specific token or user.",
+				"compatibility": {}
+			}
+		],
+    "optional": [
+      {
+          "id": "lib-wrapper",
+          "type": "module"
+      }
+    ]
+  },
   "flags": {
     "hotReload": {
       "extensions": [
