@@ -22,17 +22,19 @@
   ],
   "relationships": {
     "recommends": [
-			{
-				"id": "lib-wrapper",
-				"type": "module",
-				"reason": "Provides the module the ability to override your current speaker, allowing you to lock to a specific token or user.",
-				"compatibility": {}
-			}
-		],
+      {
+        "id": "lib-wrapper",
+        "type": "module",
+        "reason": "Provides the module the ability to override your current speaker, allowing you to lock to a specific token or user.",
+        "manifest": "https://github.com/ruipin/fvtt-lib-wrapper/releases/latest/download/module.json"
+      }
+    ],
     "optional": [
       {
-          "id": "lib-wrapper",
-          "type": "module"
+        "id": "lib-wrapper",
+        "type": "module",
+        "reason": "Provides the module the ability to override your current speaker, allowing you to lock to a specific token or user.",
+        "manifest": "https://github.com/ruipin/fvtt-lib-wrapper/releases/latest/download/module.json"
       }
     ]
   },
