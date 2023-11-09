@@ -37,7 +37,6 @@
             class="rounded-r-none"
             on:click={toggleSpeakerLock}
             disabled={getSpeakerOverride}
-            class:disabled={getSpeakerOverride}
             data-tooltip={getSpeakerOverride ? localize("vce.controls.buttons.getSpeakerOverride") : ""}
          >
             {$overridingSpeaker
@@ -49,7 +48,6 @@
          class="col-span-1 rounded-l-none"
          on:click={() => toggleSetting("lockSpeaker")}
          disabled={getSpeakerOverride}
-         class:disabled={getSpeakerOverride}
          data-tooltip={getSpeakerOverride ? localize("vce.controls.buttons.getSpeakerOverride") : ""}
       >
          {#if $pinnedButtons.includes("lockSpeaker")}

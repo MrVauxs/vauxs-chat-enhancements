@@ -4,13 +4,13 @@
 @tailwind utilities;
 
 @layer utilities {
-   .click {
-      @apply cursor-pointer transform active:scale-90 transition-transform;
-   }
+  .click {
+    @apply cursor-pointer transform active:scale-90 transition-transform;
+  }
 
-   .disabled {
-      opacity: 0.6;
-      filter: grayscale(100%);
-   }
+  [disabled] {
+    opacity: 0.6;
+    filter: grayscale(100%);
+  }
 }
 
