@@ -3,7 +3,10 @@
     "controls": {
       "buttons": {
         "lockSpeaker": "Lock Your Current Speaker",
-        "unlockSpeaker": "Unlock Your Current Speaker"
+        "unlockSpeaker": "Unlock Your Current Speaker",
+        "settings": "Open Settings",
+        "getSpeakerOverride": "Requires libWrapper which is not enabled!",
+        "whisperTo": "Whisper to..."
       }
     }
   }

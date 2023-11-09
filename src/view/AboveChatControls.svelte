@@ -1,16 +1,28 @@
 <script>
-   import "../app.postcss";
-   import IconSettings from "~icons/tabler/settings";
+   import "../app.css";
+   import IconMessages from "~icons/tabler/messages";
    import IconDots from "~icons/tabler/dots-vertical";
-   import { writable } from "svelte/store";
+   import IconLockOpen from "~icons/tabler/lock-open";
+   import IconLock from "~icons/tabler/lock";
+   import { get, writable } from "svelte/store";
    import { onDestroy, onMount } from "svelte";
    import { computePosition, flip, shift, arrow as arrowFUI, offset, autoUpdate } from "@floating-ui/dom";
-   import { clickOutside } from "../lib/utils.js";
+   import { clickOutside, localize } from "../lib/utils.js";
    import Tooltip from "./Tooltip.svelte";
    import { overridingSpeaker } from "../features/getSpeakerOverride.js";
    import Ping from "./Ping.svelte";
+   import { getSetting } from "../lib/settings";
 
    const speaker = writable(getSpeaker());
+   const whispering = writable(false);
+
+   function toggleSpeakerLock() {
+      if (get(overridingSpeaker)) {
+         overridingSpeaker.set(false);
+      } else {
+         overridingSpeaker.set(ChatMessage.getSpeaker());
+      }
+   }
 
    /**
     * @returns {object} The speaker object
@@ -94,6 +106,10 @@
       Hooks.off("controlToken", tokenHookId);
       cleanup();
    });
+
+   let pinnedButtons = getSetting("pinnedButtons");
+   let cols = [5, 1];
+   $: cols = $pinnedButtons.length > 1 ? [4, 2] : [5, 1];
 </script>
 
 <div class="vce vce-tooltip" class:hidden={!$display} bind:this={tooltip}>
@@ -104,23 +120,63 @@
 
 <div class="vce vce-main-div">
    <div class="border border-foundry-border-light-primary rounded-md p-0.5 my-1">
-      <div class="grid-cols-6 grid gap-1 h-8">
+      <div class="grid-cols-7 grid gap-1 h-8">
          <div id="icon" class="col-span-1 ml-0.5 hover:scale-110 transition-transform">
-            <img src={$speaker.img} alt={$speaker.alias} class="w-8 h-8" style="transform: scale({$speaker.scale});" />
+            <img
+               src={$speaker.img}
+               alt={$speaker.alias}
+               class="w-8 h-8 object-contain"
+               style="transform: scale({$speaker.scale});"
+            />
          </div>
          <div
             id="name"
-            class="p-0.5 col-span-4 truncate align-middle text-center text-lg"
+            class="p-0.5 col-span-{cols[0]} truncate align-middle text-center text-lg"
             data-tooltip={$speaker.alias}
             data-tooltip-direction="UP"
          >
             {$speaker.alias}
          </div>
-         <div class="col-span-1 flex">
-            <button id="settings" class="w-1/2 hover:bg-foundry-checkbox-checked click">
-               <IconSettings class="w-full" />
-            </button>
-            <Ping condition={$overridingSpeaker} classes="w-1/2 h-full">
+         <div class="col-span-{cols[1]} flex right-0 ml-auto gap-x-0.5">
+            <!-- Whisper Button -->
+            {#if $pinnedButtons.includes("whisperTo")}
+               <Ping condition={$whispering}>
+                  <button
+                     id="whisperTo"
+                     class="hover:bg-foundry-checkbox-checked click"
+                     data-tooltip-direction="UP"
+                     data-tooltip={localize("vce.controls.buttons.whisperTo")}
+                  >
+                     {#if $whispering}
+                        <IconMessages class="w-full" />
+                     {:else}
+                        <IconMessages class="w-full" />
+                     {/if}
+                  </button>
+               </Ping>
+            {/if}
+
+            <!-- Lock Button -->
+            {#if $pinnedButtons.includes("lockSpeaker")}
+               <Ping condition={$overridingSpeaker}>
+                  <button
+                     id="lockSpeaker"
+                     class="hover:bg-foundry-checkbox-checked click"
+                     on:click={toggleSpeakerLock}
+                     data-tooltip-direction="UP"
+                     data-tooltip={localize("vce.controls.buttons.lockSpeaker")}
+                  >
+                     {#if $overridingSpeaker}
+                        <IconLock class="w-full" />
+                     {:else}
+                        <IconLockOpen class="w-full" />
+                     {/if}
+                  </button>
+               </Ping>
+            {/if}
+
+            <!-- Options Button -->
+            <Ping condition={$overridingSpeaker || $whispering}>
                <button
                   id="options"
                   class="relative hover:bg-foundry-checkbox-checked click"

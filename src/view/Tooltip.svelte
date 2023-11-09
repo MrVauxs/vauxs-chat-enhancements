@@ -1,9 +1,12 @@
 <script>
+   import IconBookmarkPlus from "~icons/tabler/bookmark-plus";
+   import IconBookmarkFilled from "~icons/tabler/bookmark-filled";
    export let arrow = null;
    import { get } from "svelte/store";
    import { overridingSpeaker } from "../features/getSpeakerOverride.js";
    import { localize } from "../lib/utils.js";
    import Ping from "./Ping.svelte";
+   import { getSetting } from "../lib/settings.js";
 
    function toggleSpeakerLock() {
       if (get(overridingSpeaker)) {
@@ -14,20 +17,68 @@
    }
 
    const getSpeakerOverride = !CONFIG.VauxsChatEnhancements.getSpeakerOverride;
+
+   let pinnedButtons = getSetting("pinnedButtons");
+
+   function toggleSetting(setting) {
+      $pinnedButtons = $pinnedButtons.includes(setting)
+         ? $pinnedButtons.filter((s) => s !== setting)
+         : [...$pinnedButtons, setting];
+   }
 </script>
 
 <div
    class="relative z-20 bg-parchment p-1 grid grid-cols-1 grid-rows-3 text-foundry-text-dark-primary border-2 border-foundry-border-light-primary rounded-md border-solid"
 >
-   <Ping condition={$overridingSpeaker}>
-      <button on:click={toggleSpeakerLock} disabled={getSpeakerOverride} class:disabled={getSpeakerOverride}>
-         {$overridingSpeaker
-            ? localize("vce.controls.buttons.unlockSpeaker")
-            : localize("vce.controls.buttons.lockSpeaker")}
+   <!-- Lock Speaker -->
+   <div class="grid grid-cols-10 gap-0">
+      <Ping condition={$overridingSpeaker} classes="col-span-9">
+         <button
+            class="rounded-r-none"
+            on:click={toggleSpeakerLock}
+            disabled={getSpeakerOverride}
+            class:disabled={getSpeakerOverride}
+            data-tooltip={getSpeakerOverride ? localize("vce.controls.buttons.getSpeakerOverride") : ""}
+         >
+            {$overridingSpeaker
+               ? localize("vce.controls.buttons.unlockSpeaker")
+               : localize("vce.controls.buttons.lockSpeaker")}
+         </button>
+      </Ping>
+      <button
+         class="col-span-1 rounded-l-none"
+         on:click={() => toggleSetting("lockSpeaker")}
+         disabled={getSpeakerOverride}
+         class:disabled={getSpeakerOverride}
+         data-tooltip={getSpeakerOverride ? localize("vce.controls.buttons.getSpeakerOverride") : ""}
+      >
+         {#if $pinnedButtons.includes("lockSpeaker")}
+            <IconBookmarkFilled class="w-2 scale-200" />
+         {:else}
+            <IconBookmarkPlus class="w-2 scale-200" />
+         {/if}
       </button>
-   </Ping>
-   <button> Option 2 </button>
-   <button> Option 3 </button>
+   </div>
+
+   <!-- Whisper To... -->
+   <div class="grid grid-cols-10 gap-0">
+      <button class="col-span-9 rounded-r-none" on:click={() => console.log("TODO: whisper to...")}>
+         {localize("vce.controls.buttons.whisperTo")}
+      </button>
+      <button class="col-span-1 rounded-l-none" on:click={() => toggleSetting("whisperTo")}>
+         {#if $pinnedButtons.includes("whisperTo")}
+            <IconBookmarkFilled class="w-2 scale-200" />
+         {:else}
+            <IconBookmarkPlus class="w-2 scale-200" />
+         {/if}
+      </button>
+   </div>
+
+   <!-- Settings -->
+   <!-- svelte-ignore missing-declaration -->
+   <button on:click={() => game.settings.sheet.render(true)}>
+      {localize("vce.controls.buttons.settings")}
+   </button>
 </div>
 <div
    id="arrow"
@@ -37,6 +88,6 @@
 
 <style lang="postcss">
    button {
-      @apply my-px py-0.5 px-1 border border-foundry-border-light-primary rounded-md border-solid bg-foundry-button-background;
+      @apply my-px py-0.5 px-1 border border-foundry-border-light-primary border-solid bg-foundry-button-background;
    }
 </style>

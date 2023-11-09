@@ -17,7 +17,8 @@
 
   "globals": {
     "libWrapper": true,
-    "CONFIG": true
+    "CONFIG": true,
+    "game": true
   },
 
   // Prevents overwriting any built in globals particularly from `@typhonjs-fvtt/eslint-config-foundry.js`, but also

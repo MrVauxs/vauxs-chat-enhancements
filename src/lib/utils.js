@@ -6,21 +6,21 @@
  * @returns {object} - destroy function
  */
 export function clickOutside(node) {
-	window.addEventListener('click', handleClick);
+   window.addEventListener("click", handleClick);
 
-	// eslint-disable-next-line jsdoc/require-jsdoc
-	function handleClick(e) {
-        if (!node.contains(e.target)) {
-            node.dispatchEvent(new CustomEvent('outsideclick'));
-        }
-    }
+   // eslint-disable-next-line jsdoc/require-jsdoc
+   function handleClick(e) {
+      if (!node.contains(e.target)) {
+         node.dispatchEvent(new CustomEvent("outsideclick"));
+      }
+   }
 
-	return {
-		destroy() {
-			// the node has been removed from the DOM
-			window.removeEventListener('click', handleClick);
-		}
-	};
+   return {
+      destroy() {
+         // the node has been removed from the DOM
+         window.removeEventListener("click", handleClick);
+      },
+   };
 }
 
 /**
@@ -33,12 +33,14 @@ export function clickOutside(node) {
  * @returns {string} The localized string
  */
 export function localize(key, format) {
-	if (key.startsWith('vce')) {
-		key = key.replace('vce.', 'vauxs-chat-enhancements.');
-	}
-	if (format) {
-		return game.i18n.format(key, format);
-	} else {
-		return game.i18n.localize(key);
-	}
+   if (key.startsWith("vce")) {
+      key = key.replace("vce.", "vauxs-chat-enhancements.");
+   }
+   if (format) {
+      return game.i18n.format(key, format);
+   } else {
+      return game.i18n.localize(key);
+   }
 }
+
+export const mId = "vauxs-chat-enhancements";

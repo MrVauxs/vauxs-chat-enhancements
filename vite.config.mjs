@@ -1,6 +1,6 @@
 import { svelte } from "@sveltejs/vite-plugin-svelte";
 import resolve from "@rollup/plugin-node-resolve"; // This resolves NPM modules from node_modules.
-import preprocess from "svelte-preprocess";
+import sveltePreprocess from "svelte-preprocess";
 import { terserConfig } from "@typhonjs-fvtt/runtime/rollup";
 import autoprefixer from "autoprefixer";
 import tailwindcss from "tailwindcss";
@@ -109,7 +109,7 @@ export default () => {
 
       plugins: [
          svelte({
-            preprocess: preprocess(),
+            preprocess: sveltePreprocess(),
          }),
 
          Icons({ compiler: "svelte", autoInstall: true }),
