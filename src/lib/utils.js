@@ -6,7 +6,7 @@
  * @returns {object} - destroy function
  */
 export function clickOutside(node) {
-   window.addEventListener("click", handleClick);
+   window.addEventListener("click", handleClick, true);
 
    // eslint-disable-next-line jsdoc/require-jsdoc
    function handleClick(e) {
@@ -18,7 +18,7 @@ export function clickOutside(node) {
    return {
       destroy() {
          // the node has been removed from the DOM
-         window.removeEventListener("click", handleClick);
+         window.removeEventListener("click", handleClick, true);
       },
    };
 }
@@ -44,3 +44,4 @@ export function localize(key, format) {
 }
 
 export const mId = "vauxs-chat-enhancements";
+

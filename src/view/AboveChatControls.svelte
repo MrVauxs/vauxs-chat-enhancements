@@ -5,13 +5,13 @@
    import IconLockOpen from "~icons/tabler/lock-open";
    import IconLock from "~icons/tabler/lock";
    import { get, writable } from "svelte/store";
-   import { onDestroy, onMount } from "svelte";
-   import { computePosition, flip, shift, arrow as arrowFUI, offset, autoUpdate } from "@floating-ui/dom";
-   import { clickOutside, localize } from "../lib/utils.js";
-   import Tooltip from "./Tooltip.svelte";
+   import { onDestroy } from "svelte";
+   import { localize } from "../lib/utils.js";
+   import Tooltip from "./Components/Tooltip.svelte";
    import { overridingSpeaker } from "../features/getSpeakerOverride.js";
-   import Ping from "./Ping.svelte";
+   import Ping from "./Components/Ping.svelte";
    import { getSetting } from "../lib/settings";
+   import Options from "./Options.svelte";
 
    const speaker = writable(getSpeaker());
    const whispering = writable(false);
@@ -47,76 +47,35 @@
       speaker.set(getSpeaker());
    });
 
-   const display = writable(false);
-
-   let tooltip;
-   let tooltipButton;
-   let arrow;
-
-   function updatePosition() {
-      computePosition(tooltipButton, tooltip, {
-         placement: "top",
-         middleware: [flip(), shift({ padding: 6 }), offset(3), flip(), arrowFUI({ element: arrow })],
-      }).then(({ x, y, placement, middlewareData }) => {
-         Object.assign(tooltip.style, {
-            left: `${x}px`,
-            top: `${y}px`,
-         });
-
-         // Accessing the data
-         const { x: arrowX, y: arrowY } = middlewareData.arrow;
-
-         const staticSide = {
-            top: "bottom",
-            right: "left",
-            bottom: "top",
-            left: "right",
-         }[placement.split("-")[0]];
-
-         Object.assign(arrow.style, {
-            left: arrowX != null ? `${arrowX}px` : "",
-            top: arrowY != null ? `${arrowY}px` : "",
-            right: "",
-            bottom: "",
-            [staticSide]: "-4px",
-         });
-      });
-   }
-
-   function showTooltip() {
-      display.set(true);
-      updatePosition();
-   }
-
-   function toggleTooltip() {
-      $display ? hideTooltip() : showTooltip();
-   }
-
-   function hideTooltip() {
-      display.set(false);
-   }
-
-   let cleanup;
-
-   onMount(() => {
-      cleanup = autoUpdate(tooltipButton, tooltip, updatePosition);
-   });
+   let pinnedButtons = getSetting("pinnedButtons");
 
    onDestroy(() => {
       Hooks.off("controlToken", tokenHookId);
-      cleanup();
+      Object.keys(cleanup).forEach((key) => {
+         cleanup[key]();
+      });
    });
 
-   let pinnedButtons = getSetting("pinnedButtons");
-   let cols = [5, 1];
-   $: cols = $pinnedButtons.length > 1 ? [4, 2] : [5, 1];
+   let tooltipButton = {};
+   let toggleTooltip = {};
+   let cleanup = {};
 </script>
 
-<div class="vce vce-tooltip" class:hidden={!$display} bind:this={tooltip}>
-   <div id="tooltipContent" use:clickOutside on:outsideclick={hideTooltip}>
-      <svelte:component this={Tooltip} bind:arrow />
-   </div>
-</div>
+<Tooltip
+   tooltipButton={tooltipButton.options}
+   bind:toggleTooltip={toggleTooltip.options}
+   bind:cleanup={cleanup.options}
+>
+   <Options />
+</Tooltip>
+
+<Tooltip
+   tooltipButton={tooltipButton.whisper}
+   bind:toggleTooltip={toggleTooltip.whisper}
+   bind:cleanup={cleanup.whisper}
+>
+   Whisper Whisper Whisper Whisper
+</Tooltip>
 
 <div class="vce vce-main-div">
    <div class="border border-foundry-border-light-primary rounded-md p-0.5 my-1">
@@ -146,6 +105,8 @@
                      class="hover:bg-foundry-checkbox-checked click"
                      data-tooltip-direction="UP"
                      data-tooltip={localize("vce.controls.buttons.whisperTo")}
+                     on:click={toggleTooltip.whisper}
+                     bind:this={tooltipButton.whisper}
                   >
                      {#if $whispering}
                         <IconMessages class="w-full" />
@@ -180,8 +141,8 @@
                <button
                   id="options"
                   class="relative hover:bg-foundry-checkbox-checked click"
-                  on:click|stopPropagation={toggleTooltip}
-                  bind:this={tooltipButton}
+                  on:click={toggleTooltip.options}
+                  bind:this={tooltipButton.options}
                >
                   <IconDots class="w-full" />
                </button>
@@ -195,10 +156,5 @@
    .vce-main-div {
       flex: 0;
       margin: 0 6px;
-   }
-
-   .vce-tooltip {
-      width: max-content;
-      position: absolute;
    }
 </style>
