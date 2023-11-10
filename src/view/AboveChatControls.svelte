@@ -12,6 +12,7 @@
    import Ping from "./Components/Ping.svelte";
    import { getSetting } from "../lib/settings";
    import Options from "./Options.svelte";
+   import Whisper from "./Whisper.svelte";
 
    const speaker = writable(getSpeaker());
    const whispering = writable(false);
@@ -51,30 +52,18 @@
 
    onDestroy(() => {
       Hooks.off("controlToken", tokenHookId);
-      Object.keys(cleanup).forEach((key) => {
-         cleanup[key]();
-      });
    });
 
    let tooltipButton = {};
    let toggleTooltip = {};
-   let cleanup = {};
 </script>
 
-<Tooltip
-   tooltipButton={tooltipButton.options}
-   bind:toggleTooltip={toggleTooltip.options}
-   bind:cleanup={cleanup.options}
->
+<Tooltip tooltipButton={tooltipButton.options} bind:toggleTooltip={toggleTooltip.options}>
    <Options />
 </Tooltip>
 
-<Tooltip
-   tooltipButton={tooltipButton.whisper}
-   bind:toggleTooltip={toggleTooltip.whisper}
-   bind:cleanup={cleanup.whisper}
->
-   Whisper Whisper Whisper Whisper
+<Tooltip tooltipButton={tooltipButton.whisper} bind:toggleTooltip={toggleTooltip.whisper}>
+   <Whisper />
 </Tooltip>
 
 <div class="vce vce-main-div">
@@ -98,24 +87,20 @@
          </div>
          <div class="col-span-1 flex right-0 ml-auto gap-x-0.5">
             <!-- Whisper Button -->
-            {#if $pinnedButtons.includes("whisperTo")}
-               <Ping condition={$whispering}>
-                  <button
-                     id="whisperTo"
-                     class="hover:bg-foundry-checkbox-checked click"
-                     data-tooltip-direction="UP"
-                     data-tooltip={localize("vce.controls.buttons.whisperTo")}
-                     on:click={toggleTooltip.whisper}
-                     bind:this={tooltipButton.whisper}
-                  >
-                     {#if $whispering}
-                        <IconMessages class="w-full" />
-                     {:else}
-                        <IconMessages class="w-full" />
-                     {/if}
-                  </button>
-               </Ping>
-            {/if}
+            <Ping condition={$whispering}>
+               <button
+                  id="whisperTo"
+                  class="hover:bg-foundry-checkbox-checked click"
+                  on:click={toggleTooltip.whisper}
+                  bind:this={tooltipButton.whisper}
+               >
+                  {#if $whispering}
+                     <IconMessages class="w-full" />
+                  {:else}
+                     <IconMessages class="w-full" />
+                  {/if}
+               </button>
+            </Ping>
 
             <!-- Lock Button -->
             {#if $pinnedButtons.includes("lockSpeaker")}

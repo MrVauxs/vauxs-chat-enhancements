@@ -1,14 +1,12 @@
 <script>
    import { clickOutside } from "../../lib/utils";
-   import { computePosition, flip, shift, arrow as arrowFUI, offset, autoUpdate } from "@floating-ui/dom";
+   import { computePosition, flip, shift, arrow as arrowFUI, offset } from "@floating-ui/dom";
    import { writable } from "svelte/store";
-
-   export let arrow = null;
    export let tooltipButton;
-   export let cleanup;
    export const display = writable(false);
 
    let tooltip;
+   let arrow;
 
    function updatePosition() {
       computePosition(tooltipButton, tooltip, {
@@ -46,7 +44,6 @@
    }
 
    export function toggleTooltip() {
-      console.log("toggled", $display);
       $display ? hideTooltip() : showTooltip();
    }
 
@@ -54,7 +51,17 @@
       display.set(false);
    }
 
-   $: if (tooltipButton) cleanup = autoUpdate(tooltipButton, tooltip, updatePosition);
+   import { onDestroy } from "svelte";
+   import { autoUpdate } from "@floating-ui/dom";
+
+   let cleanup = () => {};
+
+   $: if (tooltipButton && !cleanup && !import.meta.env.DEV)
+      cleanup = autoUpdate(tooltipButton, tooltip, updatePosition);
+
+   onDestroy(() => {
+      cleanup();
+   });
 </script>
 
 <div
@@ -66,7 +73,7 @@
    on:outsideclick={hideTooltip}
 >
    <div
-      class="relative z-20 bg-parchment p-1 text-foundry-text-dark-primary border-2 border-foundry-border-light-primary rounded-md border-solid"
+      class="relative z-index-tooltip bg-parchment p-1 text-foundry-text-dark-primary border-2 border-foundry-border-light-primary rounded-md border-solid"
    >
       <slot />
    </div>
