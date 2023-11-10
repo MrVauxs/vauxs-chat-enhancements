@@ -120,7 +120,7 @@
 
 <div class="vce vce-main-div">
    <div class="border border-foundry-border-light-primary rounded-md p-0.5 my-1">
-      <div class="grid-cols-7 grid gap-1 h-8">
+      <div class="grid-cols-5 grid h-8">
          <div id="icon" class="col-span-1 ml-0.5 hover:scale-110 transition-transform">
             <img
                src={$speaker.img}
@@ -131,13 +131,13 @@
          </div>
          <div
             id="name"
-            class="p-0.5 col-span-{cols[0]} truncate align-middle text-center text-lg"
+            class="p-0.5 col-span-3 truncate align-middle text-center text-lg"
             data-tooltip={$speaker.alias}
             data-tooltip-direction="UP"
          >
             {$speaker.alias}
          </div>
-         <div class="col-span-{cols[1]} flex right-0 ml-auto gap-x-0.5">
+         <div class="col-span-1 flex right-0 ml-auto gap-x-0.5">
             <!-- Whisper Button -->
             {#if $pinnedButtons.includes("whisperTo")}
                <Ping condition={$whispering}>
