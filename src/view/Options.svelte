@@ -2,10 +2,11 @@
    import IconBookmarkPlus from "~icons/tabler/bookmark-plus";
    import IconBookmarkFilled from "~icons/tabler/bookmark-filled";
    import { get } from "svelte/store";
-   import { overridingSpeaker } from "../features/getSpeakerOverride.js";
+   import { overridingSpeaker } from "../lib/getSpeakerOverride.js";
    import { localize } from "../lib/utils.js";
    import Ping from "./Components/Ping.svelte";
    import { getSetting } from "../lib/settings.js";
+   import { openArchiveApp } from "./Archive/ArchiveApp.js";
 
    function toggleSpeakerLock() {
       if (get(overridingSpeaker)) {
@@ -47,9 +48,9 @@
       data-tooltip={getSpeakerOverride ? localize("vce.controls.buttons.getSpeakerOverride") : ""}
    >
       {#if $pinnedButtons.includes("lockSpeaker")}
-         <IconBookmarkFilled class="w-2 scale-200" />
+         <IconBookmarkFilled class="w-2 scale-200 mx-auto" />
       {:else}
-         <IconBookmarkPlus class="w-2 scale-200" />
+         <IconBookmarkPlus class="w-2 scale-200 mx-auto" />
       {/if}
    </button>
 </div>
@@ -58,6 +59,10 @@
 <!-- svelte-ignore missing-declaration -->
 <button on:click={() => game.settings.sheet.render(true)}>
    {localize("vce.controls.buttons.settings")}
+</button>
+
+<button on:click={openArchiveApp}>
+   {localize("vce.controls.buttons.archive")}
 </button>
 
 <style lang="postcss">

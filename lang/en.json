@@ -6,8 +6,26 @@
         "unlockSpeaker": "Unlock Your Current Speaker",
         "settings": "Open Settings",
         "getSpeakerOverride": "Requires libWrapper which is not enabled!",
-        "whisperTo": "Whisper to..."
+        "whisperTo": "Whisper to...",
+        "archive": "Open Chat Archive"
       }
+    },
+    "settings": {
+      "archive": {
+        "title": "Chat Archive",
+        "hint": "Open the chat archive in a new window."
+      }
+    },
+    "archive": {
+      "title": "Chat Archive",
+      "time": "{date} at {time}",
+      "empty": "No archives to display!",
+      "export": "Export Chat Archive to File",
+      "create": "Create New Chat Archive",
+      "delete": "Delete Chat Archive",
+      "enableDeletion": "Enable Deletion",
+      "disableDeletion": "Disable Deletion",
+      "confirmDeletion": "Are you sure you want to delete the chat archive?"
     }
   }
 }

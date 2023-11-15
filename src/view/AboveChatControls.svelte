@@ -8,7 +8,7 @@
    import { onDestroy } from "svelte";
    import { localize } from "../lib/utils.js";
    import Tooltip from "./Components/Tooltip.svelte";
-   import { overridingSpeaker } from "../features/getSpeakerOverride.js";
+   import { overridingSpeaker } from "../lib/getSpeakerOverride.js";
    import Ping from "./Components/Ping.svelte";
    import { getSetting } from "../lib/settings";
    import Options from "./Options.svelte";

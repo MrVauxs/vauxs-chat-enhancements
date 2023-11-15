@@ -3,14 +3,34 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  [disabled] {
+    opacity: 0.6;
+    filter: grayscale(100%);
+  }
+}
+
 @layer utilities {
   .click {
     @apply cursor-pointer transform active:scale-90 transition-transform;
   }
 
-  [disabled] {
-    opacity: 0.6;
-    filter: grayscale(100%);
+  .scroll-gutter-sb {
+    scrollbar-gutter: stable both-edges;
   }
+}
+
+@layer components {
+  .inside-button {
+    @apply border border-foundry-border-dark rounded-md p-1 w-full hover:shadow-[inset_0_2px_4px_0_rgb(0,0,0,0.2)];
+  }
+}
+
+.inside-button + .inside-button {
+  @apply border-l-0;
+}
+
+.vce-chat-archive .window-content {
+  background: #fff5ee;
 }
 

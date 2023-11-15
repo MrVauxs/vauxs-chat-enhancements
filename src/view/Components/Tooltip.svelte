@@ -56,7 +56,7 @@
 
    let cleanup = () => {};
 
-   $: if (tooltipButton && !cleanup && !import.meta.env.DEV)
+   $: if (!import.meta.env.DEV && tooltipButton && !cleanup)
       cleanup = autoUpdate(tooltipButton, tooltip, updatePosition);
 
    onDestroy(() => {
