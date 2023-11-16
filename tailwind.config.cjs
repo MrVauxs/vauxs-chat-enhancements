@@ -12,6 +12,7 @@ const config = {
             parchment: "url(../ui/parchment.jpg)",
          },
          colors: {
+            "pleasant-white": "#fff5ee",
             foundry: {
                "button-background": "rgba(255, 255, 240, 0.8)",
                "text-light-highlight": "var(--color-text-light-highlight)",

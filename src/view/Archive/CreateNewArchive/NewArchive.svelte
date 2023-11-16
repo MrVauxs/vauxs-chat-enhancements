@@ -8,12 +8,18 @@
 
    const archiveStore = getSetting("archives");
 
+   console.log(archiveStore);
+
    function addArchive() {
-      $archiveStore.push({
-         name: "New Archive",
-         date: Date.now(),
+      archiveStore.update((store) => {
+         console.log(store);
+         store.push({
+            name: "New Archive",
+            date: Date.now(),
+            id: randomID(),
+         });
+         return store;
       });
-      console.log($archiveStore);
    }
 </script>
 

@@ -26,11 +26,10 @@
   }
 }
 
-.inside-button + .inside-button {
-  @apply border-l-0;
+#vce-chat-archive {
 }
 
 .vce-chat-archive .window-content {
-  background: #fff5ee;
+  @apply bg-pleasant-white;
 }
 

@@ -25,30 +25,26 @@
       ui.notifications.info("export");
    }
 
-   function deleteArchive() {
-      ui.notifications.info("delete");
-   }
-
    let enableDeletion = true;
 </script>
 
 <ApplicationShell bind:elementRoot transition={import.meta.env.DEV ? null : blur} transitionOptions={{ duration: 500 }}>
-   <div class="grid grid-cols-3 gap-1 overflow-hidden">
-      <div class="col-span-1 flex flex-col">
-         <div class="overflow-y-scroll scroll-gutter-sb flex-grow-0 flex-shrink flex-auto h-full">
+   <div class="grid grid-cols-3 gap-1">
+      <div class="col-span-1 flex flex-col relative">
+         <div class="overflow-y-scroll scroll-gutter-sb">
             {#if !$archiveStore.length}
                <div class="text-center text-gray-400 pt-4">{localize("vce.archive.empty")}</div>
             {/if}
             {#each $archiveStore as item}
-               <Archive {...item} {openArchive} {exportArchive} {enableDeletion} {deleteArchive} />
+               <Archive {...item} {openArchive} {exportArchive} {enableDeletion} />
             {/each}
          </div>
-         <div class="mt-2 flex-1 flex-row inline-flex">
+         <div class="mt-2 flex-row inline-flex w-full absolute bottom-0 bg-pleasant-white">
             <button class="inside-button rounded-r-none" on:click={createArchive}>
                {localize("vce.archive.create")}
             </button>
             <button
-               class="inside-button rounded-l-none w-min"
+               class="inside-button rounded-l-none w-min border-l-0"
                on:click={() => (enableDeletion = !enableDeletion)}
                class:bg-[rgb(255,0,0,0.2)]={enableDeletion}
                data-tooltip={enableDeletion

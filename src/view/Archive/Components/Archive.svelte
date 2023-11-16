@@ -4,16 +4,37 @@
 
    export let name;
    export let date;
+   export let id;
    export let enableDeletion = false;
-   export let click = () => {};
+   export let openArchive = () => {};
    export let exportArchive = () => {};
-   export let deleteArchive = () => {};
 
    import { localize } from "../../../lib/utils.js";
    import { fade } from "svelte/transition";
+   import { getSetting } from "../../../lib/settings.js";
+
+   const archiveStore = getSetting("archives");
+
+   function deleteArchive(event) {
+      function remove() {
+         archiveStore.update((store) => store.filter((item) => item.id !== id));
+      }
+
+      if (event.shiftKey) {
+         remove();
+      } else {
+         Dialog.confirm({
+            content: localize("vce.archive.confirmDeletion"),
+         }).then((result) => {
+            if (result) {
+               remove();
+            }
+         });
+      }
+   }
 </script>
 
-<button class="inside-button" on:click={click}>
+<button class="inside-button" on:click={openArchive}>
    <div class="text-base text-left">{name}</div>
    <footer class="flex text-xs">
       <button
