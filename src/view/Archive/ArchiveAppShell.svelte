@@ -31,7 +31,7 @@
 <ApplicationShell bind:elementRoot transition={import.meta.env.DEV ? null : blur} transitionOptions={{ duration: 500 }}>
    <div class="grid grid-cols-3 gap-1">
       <div class="col-span-1 flex flex-col relative">
-         <div class="overflow-y-scroll scroll-gutter-sb">
+         <div class="overflow-y-scroll scroll-gutter-sb h-[500px]">
             {#if !$archiveStore.length}
                <div class="text-center text-gray-400 pt-4">{localize("vce.archive.empty")}</div>
             {/if}
