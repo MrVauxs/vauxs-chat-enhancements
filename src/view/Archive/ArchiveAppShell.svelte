@@ -11,10 +11,14 @@
    import ChatArchiver from "../../lib/chatArchiver.js";
    import { openNewArchiveApp } from "./CreateNewArchive/NewArchive.js";
 
-   const archives = ChatArchiver.getArchives();
+   const archiveStore = ChatArchiver.getArchives(true);
 
    function createArchive() {
-      openNewArchiveApp();
+      if (game.messages.size > 0) {
+         openNewArchiveApp();
+      } else {
+         ui.notifications.error("No messages to archive!");
+      }
    }
 
    function openArchive() {
@@ -30,10 +34,10 @@
    <div class="grid grid-cols-5 gap-1">
       <div class="col-span-2 flex flex-col relative">
          <div class="overflow-y-scroll scroll-gutter-sb h-[500px]">
-            {#await archives}
+            {#await archiveStore.init()}
                Loading...
-            {:then archives}
-               {#each archives as item}
+            {:then}
+               {#each $archiveStore as item}
                   <Archive {...item} {openArchive} {exportArchive} />
                {/each}
             {/await}
@@ -44,7 +48,7 @@
             </button>
             <button
                class="inside-button rounded-l-none w-min border-l-0 bg-pleasant-white"
-               disabled={true}
+               disabled="true"
                data-tooltip={localize("vce.archive.cantDelete", {
                   path: `"<span style="color:yellow;">${ChatArchiver.chatPath()}</span>"`,
                })}

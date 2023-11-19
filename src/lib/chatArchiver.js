@@ -2,7 +2,7 @@ import { writable } from "svelte/store";
 import { createEasyHook, slugify } from "./utils";
 
 export default class ChatArchiver {
-   constructor(messages, { name, date, description }) {
+   constructor(messages, { name, date, description } = {}) {
       this._ogMessages = messages;
       this.chatMessages = messages;
       this.name = name ?? new Date(Date.now()).toDateString();
@@ -10,27 +10,35 @@ export default class ChatArchiver {
       this.description = description ?? "";
    }
 
-   get lastMessage() {
-      return this.chatMessages.at(-1);
-   }
-
    get firstMessage() {
       return this.chatMessages.at(0);
    }
 
    set firstMessage(message) {
-      this.chatMessages = this._ogMessages.filter((m) => m.timestamp >= message.timestamp);
+      this.chatMessages = this._ogMessages.filter((m) =>
+         m.timestamp >= typeof message === "number" ? message : message.timestamp
+      );
+   }
+
+   get lastMessage() {
+      return this.chatMessages.at(-1);
    }
 
    set lastMessage(message) {
-      this.chatMessages = this._ogMessages.filter((m) => m.timestamp <= message.timestamp);
+      this.chatMessages = this._ogMessages.filter((m) =>
+         m.timestamp <= typeof message === "number" ? message : message.timestamp
+      );
    }
 
    toJSON() {
       return this.chatMessages.map((m) => m.toJSON());
    }
 
-   createArchive() {
+   deleteMessages() {
+      this.chatMessages.forEach((m) => m.delete());
+   }
+
+   createArchive(deleteMessages = false) {
       const data = {
          name: this.name,
          date: this.date,
@@ -40,30 +48,13 @@ export default class ChatArchiver {
       };
       const content = JSON.stringify(data, null, "\t");
       const file = new File([content], `${slugify(`${data.name}-${data.id}`)}.json`, { type: "application/json" });
-      return FilePicker.upload("data", ChatArchiver.chatPath(), file);
-   }
 
-   static fromChatLog(store = false) {
-      let result;
-      if (store) {
-         const archive = new ChatArchiver(game.messages.contents);
-         result = writable(archive, (set) => {
-            const trackingHooks = [
-               createEasyHook("createChatMessage", () => {
-                  set(new ChatArchiver(game.messages.contents, archive));
-               }),
-
-               createEasyHook("deleteChatMessage", () => {
-                  set(new ChatArchiver(game.messages.contents, archive));
-               }),
-            ];
-
-            return () => trackingHooks.forEach((h) => h());
-         });
-      } else {
-         result = new ChatArchiver(game.messages.contents);
-      }
-      return result;
+      FilePicker.upload("data", ChatArchiver.chatPath(), file).then(() => {
+         Hooks.call("createChatArchive", true);
+         if (deleteMessages) {
+            this.deleteMessages();
+         }
+      });
    }
 
    static worldPath(suffix) {
@@ -94,15 +85,66 @@ export default class ChatArchiver {
       return await response.json();
    }
 
+   static scrollToMessage(message) {
+      const chatMessage = document.querySelector(`[data-message-id="${message.id}"]`);
+
+      if (chatMessage) {
+         chatMessage.scrollIntoView({ behavior: "smooth", block: "center" });
+         chatMessage.classList.add("vce-highlight");
+         setTimeout(() => {
+            chatMessage.classList.remove("vce-highlight");
+         }, 4000);
+      } else {
+         ui.notifications.warn(`Cannot find message! ID: ${message.id}`);
+      }
+   }
+
+   static fromChatLog(store = false) {
+      let result;
+      if (store) {
+         const archive = new ChatArchiver(game.messages.contents);
+         result = writable(archive, (set) => {
+            const trackingHooks = [
+               createEasyHook("createChatMessage", () => {
+                  set(new ChatArchiver(game.messages.contents, archive));
+               }),
+
+               createEasyHook("deleteChatMessage", () => {
+                  set(new ChatArchiver(game.messages.contents, archive));
+               }),
+            ];
+            return () => trackingHooks.forEach((h) => h());
+         });
+      } else {
+         result = new ChatArchiver(game.messages.contents);
+      }
+      return result;
+   }
+
    /**
     * Gets all chat archives in the world folder.
     *
+    * @param {boolean} store Whether or not to return the archives as a writable store.
+    *
     * @returns {Promise<Array<string>>} An array of file paths found in the chat-archives folder.
     */
-   static async getArchives() {
-      return await ChatArchiver.getFiles().then((res) =>
-         Promise.all(res.map((path) => ChatArchiver.parsePathJSON(path)))
-      );
+   static getArchives(store = false) {
+      if (store) {
+         return {
+            ...writable([], (set) => {
+               const trackingHooks = [
+                  createEasyHook("createChatArchive", async () => {
+                     set(await ChatArchiver.getArchives());
+                  }),
+               ];
+               return () => trackingHooks.forEach((h) => h());
+            }),
+            async init() {
+               this.set(await ChatArchiver.getArchives());
+            },
+         };
+      }
+      return ChatArchiver.getFiles().then((res) => Promise.all(res.map((path) => ChatArchiver.parsePathJSON(path))));
    }
 }
 

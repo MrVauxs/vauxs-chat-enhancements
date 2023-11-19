@@ -8,32 +8,28 @@
 
    const archive = ChatArchiver.fromChatLog(true);
 
-   function addArchive() {
-      console.log($archive);
-      $archive.createArchive();
+   async function addArchive() {
+      console.log(await $archive.createArchive(deleteMessages));
    }
 
-   function scrollToMessageFromUnixTime(time) {
-      const timestamp = Math.floor(new Date(time).getTime());
-      const messageDocument = $archive.chatMessages.find((m) => m.timestamp >= timestamp);
-      const chatMessage = document.querySelector(`[data-message-id="${messageDocument.id}"]`);
+   let all = true;
+   let deleteMessages = false;
+   let from = new Date($archive.firstMessage.timestamp).toISOString().slice(0, 16);
+   let to = new Date($archive.lastMessage.timestamp).toISOString().slice(0, 16);
 
-      console.log(time, timestamp, messageDocument.timestamp);
-
-      if (chatMessage) {
-         chatMessage.scrollIntoView({ behavior: "smooth", block: "center" });
-         chatMessage.classList.add("vce-highlight");
-         setTimeout(() => {
-            chatMessage.classList.remove("vce-highlight");
-         }, 4000);
-      } else {
-         ui.notifications.warn("Cannot find message! " + messageDocument.id);
-      }
+   $: if (all) {
+      $archive.chatMessages = $archive._ogMessages;
    }
+
+   $: if (!all)
+      $archive.chatMessages = $archive._ogMessages.filter((message) => {
+         const date = new Date(message.timestamp).getTime();
+         return date >= new Date(from).getTime() && date <= new Date(to).getTime();
+      });
 </script>
 
 <ApplicationShell bind:elementRoot>
-   <div class="grid gap-1 pb-4">
+   <div class="grid px-1">
       <div>
          <label class="font-bold" for="name"> Name </label>
          <input type="text" id="name" bind:value={$archive.name} />
@@ -42,31 +38,35 @@
          <label class="font-bold" for="description"> Description </label>
          <input type="text" id="description" bind:value={$archive.description} />
       </div>
+      <div class="grid grid-cols-4 items-center">
+         <label class="font-bold col-span-3 items-center text-center" for="all-chat">
+            Archive all of Current Chat
+         </label>
+         <input class="right-0" type="checkbox" id="all-chat" bind:checked={all} />
+      </div>
       <div class="grid grid-rows-2 grid-cols-12 gap-1">
-         <!-- From -->
-         <label class="col-span-3 font-bold text-center m-auto" for="date-from"> From... </label>
-         <button
-            class="col-span-1"
-            data-tooltip={localize("vce.archive.scroll")}
-            on:click={() => scrollToMessageFromUnixTime($archive.rangeDate.start)}
-         >
+         <label disabled={all} class="col-span-3 font-bold text-center m-auto" for="date-from"> From... </label>
+         <!--
+         <button disabled={all} class="col-span-1" data-tooltip={localize("vce.archive.scroll")}>
             <i class="fa-solid fa-arrow-up-right-from-square" />
          </button>
-         <input class="col-span-8" type="datetime-local" id="date-from" bind:value={$archive.rangeDate.start} />
+         -->
+         <input disabled={all} class="col-span-9" type="datetime-local" id="date-from" bind:value={from} />
 
-         <!-- To -->
-         <label class="col-span-3 text-center m-auto font-bold" for="date-to"> To... </label>
-         <button
-            class="col-span-1"
-            data-tooltip={localize("vce.archive.scroll")}
-            on:click={() => scrollToMessageFromUnixTime($archive.rangeDate.end)}
-         >
+         <label disabled={all} class="col-span-3 text-center m-auto font-bold" for="date-to"> To... </label>
+         <!--
+         <button disabled={all} class="col-span-1" data-tooltip={localize("vce.archive.scroll")}>
             <i class="fa-solid fa-arrow-up-right-from-square" />
          </button>
-         <input class="col-span-8" type="datetime-local" id="date-to" bind:value={$archive.rangeDate.end} />
+         -->
+         <input disabled={all} class="col-span-9" type="datetime-local" id="date-to" bind:value={to} />
+      </div>
+      <div class="grid grid-cols-4 items-center pt-2">
+         <label class="font-bold col-span-3 items-center text-center" for="all-chat"> Delete the Messages </label>
+         <input class="right-0" type="checkbox" id="all-chat" bind:checked={deleteMessages} />
       </div>
    </div>
-   <button class="max-h-8 inside-button" on:click={addArchive}>
+   <button class="max-h-8 inside-button" on:click={async () => await addArchive()}>
       {localize("vce.archive.button", { count: $archive.chatMessages.length })}
    </button>
 </ApplicationShell>

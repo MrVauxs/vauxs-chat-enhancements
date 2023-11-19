@@ -4,7 +4,7 @@
 @tailwind utilities;
 
 @layer base {
-  [disabled] {
+  [disabled]:not([disabled="false"]) {
     opacity: 0.6;
     filter: grayscale(100%);
     @apply hover:!shadow-none;
