@@ -35,7 +35,7 @@ export default class ChatArchiver {
       };
       const content = JSON.stringify(data, null, "\t");
       const file = new File([content], `${slugify(`${data.name}-${data.id}`)}.json`, { type: "application/json" });
-      return FilePicker.upload("data", ChatArchiver.worldPath("chat-archives"), file);
+      return FilePicker.upload("data", ChatArchiver.chatPath(), file);
    }
 
    static fromChatLog(store = false) {
@@ -64,15 +64,26 @@ export default class ChatArchiver {
       return suffix ? `worlds/${game.world.id}/${suffix}` : `worlds/${game.world.id}`;
    }
 
+   static chatPath() {
+      return ChatArchiver.worldPath("chat-archives");
+   }
+
    static async createFolder() {
       await FilePicker.browse("data", ChatArchiver.worldPath()).then(async (result) => {
-         if (!result.dirs.includes(ChatArchiver.worldPath("chat-archives"))) {
-            await FilePicker.createDirectory("data", ChatArchiver.worldPath("chat-archives"));
+         if (!result.dirs.includes(ChatArchiver.chatPath())) {
+            await FilePicker.createDirectory("data", ChatArchiver.chatPath());
          }
       });
    }
 
-   static async parseArchive(path) {
+   static async getFiles() {
+      await ChatArchiver.createFolder();
+      return FilePicker.browse("data", ChatArchiver.chatPath(), { extensions: [".json"] }).then((result) => {
+         return result.files;
+      });
+   }
+
+   static async parsePathJSON(path) {
       const response = await fetch(path);
       return await response.json();
    }
@@ -83,11 +94,8 @@ export default class ChatArchiver {
     * @returns {Promise<Array<string>>} An array of file paths found in the chat-archives folder.
     */
    static async getArchives() {
-      await ChatArchiver.createFolder();
-      return FilePicker.browse("data", ChatArchiver.worldPath("chat-archives"), { extensions: [".json"] }).then(
-         (result) => {
-            return result.files;
-         }
+      return await ChatArchiver.getFiles().then((res) =>
+         Promise.all(res.map((path) => ChatArchiver.parsePathJSON(path)))
       );
    }
 }

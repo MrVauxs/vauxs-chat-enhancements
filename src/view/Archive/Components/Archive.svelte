@@ -1,34 +1,13 @@
 <script>
    import IconDownload from "~icons/tabler/download";
-   import IconTrashbin from "~icons/tabler/trash";
 
    export let name;
    export let date;
    // export let id;
-   export let enableDeletion = false;
    export let openArchive = () => {};
    export let exportArchive = () => {};
 
    import { localize } from "../../../lib/utils.js";
-   import { fade } from "svelte/transition";
-
-   function deleteArchive(event) {
-      function remove() {
-         // archiveStore.update((store) => store.filter((item) => item.id !== id));
-      }
-
-      if (event.shiftKey) {
-         remove();
-      } else {
-         Dialog.confirm({
-            content: localize("vce.archive.confirmDeletion"),
-         }).then((result) => {
-            if (result) {
-               remove();
-            }
-         });
-      }
-   }
 </script>
 
 <button class="inside-button" on:click={openArchive}>
@@ -41,16 +20,6 @@
       >
          <IconDownload />
       </button>
-      {#if enableDeletion}
-         <button
-            transition:fade
-            class="m-0 p-0text-center w-min bg-red-600/60"
-            data-tooltip={localize("vce.archive.delete")}
-            on:click|stopPropagation={deleteArchive}
-         >
-            <IconTrashbin />
-         </button>
-      {/if}
       <div class="ml-auto">
          {localize("vce.archive.time", {
             date: new Date(date).toISOString().split("T")[0].replaceAll("-", "/"),

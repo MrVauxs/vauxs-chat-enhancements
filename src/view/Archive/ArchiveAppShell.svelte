@@ -24,8 +24,6 @@
    function exportArchive() {
       ui.notifications.info("export");
    }
-
-   let enableDeletion = true;
 </script>
 
 <ApplicationShell bind:elementRoot transition={import.meta.env.DEV ? null : blur} transitionOptions={{ duration: 500 }}>
@@ -35,35 +33,37 @@
             {#await archives}
                Loading...
             {:then archives}
-               {#each archives as path}
-                  <!-- <Archive {...await ChatArchiver.parseArchive(path)} {openArchive} {exportArchive} {enableDeletion} />-->
-                  aaaaaaaaaa
+               {#each archives as item}
+                  <Archive {...item} {openArchive} {exportArchive} />
                {/each}
             {/await}
          </div>
-         <div class="mt-2 flex-row inline-flex w-full absolute bottom-0 bg-pleasant-white">
-            <button class="inside-button rounded-r-none" on:click={createArchive}>
+         <div class="mt-2 flex-row inline-flex w-full absolute bottom-0">
+            <button class="inside-button rounded-r-none bg-pleasant-white" on:click={createArchive}>
                {localize("vce.archive.create")}
             </button>
             <button
-               class="inside-button rounded-l-none w-min border-l-0"
-               on:click={() => (enableDeletion = !enableDeletion)}
-               class:bg-[rgb(255,0,0,0.2)]={enableDeletion}
-               data-tooltip={enableDeletion
-                  ? localize("vce.archive.disableDeletion")
-                  : localize("vce.archive.enableDeletion")}
+               class="inside-button rounded-l-none w-min border-l-0 bg-pleasant-white"
+               disabled={true}
+               data-tooltip={localize("vce.archive.cantDelete", { path: `<b>"${ChatArchiver.chatPath()}"</b>` })}
             >
                <IconTrashbin />
             </button>
          </div>
       </div>
       <div class="p-2 col-span-2 border rounded-sm border-foundry-border-dark-primary flex flex-col h-full">
-         <div class="flex-grow-0 flex-shrink flex-auto">search</div>
+         <div class="flex-grow-0 flex-shrink flex-auto">
+            <!-- search -->
+            search row
+         </div>
          <div class="flex-1 overflow-y-scroll">
             <!-- await (new ChatMessage(game.messages.contents[0])).getHTML() -->
             content
          </div>
-         <div>paginate row</div>
+         <div>
+            <!-- pagination -->
+            paginate row
+         </div>
       </div>
    </div>
 </ApplicationShell>

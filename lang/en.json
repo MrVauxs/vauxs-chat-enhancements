@@ -26,10 +26,7 @@
       "empty": "No archives to display!",
       "export": "Export Chat Archive to File",
       "create": "Create New Chat Archive",
-      "delete": "Delete Chat Archive",
-      "enableDeletion": "Enable Deletion",
-      "disableDeletion": "Disable Deletion",
-      "confirmDeletion": "Are you sure you want to delete the chat archive?"
+      "cantDelete": "Due to security reasons, FoundryVTT does not allow deleting files from the server. <p/> You have to manually go to the {path} and delete the archive!"
     }
   }
 }
