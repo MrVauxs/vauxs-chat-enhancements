@@ -13,6 +13,7 @@
    import { getSetting } from "../../lib/settings.js";
    import Options from "./Components/Options.svelte";
    import Whisper from "./Components/Whisper.svelte";
+   import { fly } from "svelte/transition";
 
    const speaker = writable(getSpeaker());
    const whispering = writable(false);
@@ -66,7 +67,7 @@
    <Whisper />
 </Tooltip>
 
-<div class="vce vce-main-div">
+<div class="vce vce-main-div" transition:fly={{ y: 50, duration: 750 }}>
    <div class="border border-foundry-border-light-primary rounded-md p-0.5 my-1">
       <div class="grid-cols-5 grid h-8">
          <div id="icon" class="col-span-1 ml-0.5 hover:scale-110 transition-transform">

@@ -27,8 +27,8 @@
 </script>
 
 <ApplicationShell bind:elementRoot transition={import.meta.env.DEV ? null : blur} transitionOptions={{ duration: 500 }}>
-   <div class="grid grid-cols-3 gap-1">
-      <div class="col-span-1 flex flex-col relative">
+   <div class="grid grid-cols-5 gap-1">
+      <div class="col-span-2 flex flex-col relative">
          <div class="overflow-y-scroll scroll-gutter-sb h-[500px]">
             {#await archives}
                Loading...
@@ -45,13 +45,15 @@
             <button
                class="inside-button rounded-l-none w-min border-l-0 bg-pleasant-white"
                disabled={true}
-               data-tooltip={localize("vce.archive.cantDelete", { path: `<b>"${ChatArchiver.chatPath()}"</b>` })}
+               data-tooltip={localize("vce.archive.cantDelete", {
+                  path: `"<span style="color:yellow;">${ChatArchiver.chatPath()}</span>"`,
+               })}
             >
                <IconTrashbin />
             </button>
          </div>
       </div>
-      <div class="p-2 col-span-2 border rounded-sm border-foundry-border-dark-primary flex flex-col h-full">
+      <div class="p-2 col-span-3 border rounded-sm border-foundry-border-dark-primary flex flex-col h-full">
          <div class="flex-grow-0 flex-shrink flex-auto">
             <!-- search -->
             search row

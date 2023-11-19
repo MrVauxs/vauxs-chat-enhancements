@@ -28,7 +28,7 @@ export default class NewArchiveApplication extends SvelteApplication {
          id: "vce-create-chat-archive",
          classes: ["vce vce-chat-archive"],
          title: "vauxs-chat-enhancements.archive.create",
-         width: 300,
+         width: 400,
          height: 300,
 
          svelte: {

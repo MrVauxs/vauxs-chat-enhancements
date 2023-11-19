@@ -34,3 +34,7 @@
   @apply bg-pleasant-white;
 }
 
+.vce-highlight {
+  @apply animate-pulse;
+}
+

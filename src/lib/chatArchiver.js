@@ -2,8 +2,12 @@ import { writable } from "svelte/store";
 import { createEasyHook, slugify } from "./utils";
 
 export default class ChatArchiver {
-   constructor(messages) {
+   constructor(messages, { name, date, description }) {
+      this._ogMessages = messages;
       this.chatMessages = messages;
+      this.name = name ?? new Date(Date.now()).toDateString();
+      this.date = date ?? Date.now();
+      this.description = description ?? "";
    }
 
    get lastMessage() {
@@ -14,22 +18,23 @@ export default class ChatArchiver {
       return this.chatMessages.at(0);
    }
 
-   get rangeDate() {
-      return {
-         start: this.firstMessage.timestamp,
-         end: this.lastMessage.timestamp,
-      };
+   set firstMessage(message) {
+      this.chatMessages = this._ogMessages.filter((m) => m.timestamp >= message.timestamp);
+   }
+
+   set lastMessage(message) {
+      this.chatMessages = this._ogMessages.filter((m) => m.timestamp <= message.timestamp);
    }
 
    toJSON() {
       return this.chatMessages.map((m) => m.toJSON());
    }
 
-   createArchive({ name, date, description }) {
+   createArchive() {
       const data = {
-         name,
-         date,
-         description,
+         name: this.name,
+         date: this.date,
+         description: this.description,
          id: randomID(),
          messages: this.toJSON(),
       };
@@ -41,14 +46,15 @@ export default class ChatArchiver {
    static fromChatLog(store = false) {
       let result;
       if (store) {
-         result = writable(new ChatArchiver(game.messages.contents), (set) => {
+         const archive = new ChatArchiver(game.messages.contents);
+         result = writable(archive, (set) => {
             const trackingHooks = [
                createEasyHook("createChatMessage", () => {
-                  set(new ChatArchiver(game.messages.contents));
+                  set(new ChatArchiver(game.messages.contents, archive));
                }),
 
                createEasyHook("deleteChatMessage", () => {
-                  set(new ChatArchiver(game.messages.contents));
+                  set(new ChatArchiver(game.messages.contents, archive));
                }),
             ];
 
