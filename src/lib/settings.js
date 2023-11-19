@@ -43,8 +43,6 @@ const array = [
          config: true,
          type: Boolean,
          default: true,
-         // onChange: () => {},
-         requiresReload: true,
       },
    },
 ];
