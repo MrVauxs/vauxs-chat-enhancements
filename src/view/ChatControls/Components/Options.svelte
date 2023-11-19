@@ -2,11 +2,11 @@
    import IconBookmarkPlus from "~icons/tabler/bookmark-plus";
    import IconBookmarkFilled from "~icons/tabler/bookmark-filled";
    import { get } from "svelte/store";
-   import { overridingSpeaker } from "../lib/getSpeakerOverride.js";
-   import { localize } from "../lib/utils.js";
-   import Ping from "./Components/Ping.svelte";
-   import { getSetting } from "../lib/settings.js";
-   import { openArchiveApp } from "./Archive/ArchiveApp.js";
+   import { overridingSpeaker } from "../../../lib/getSpeakerOverride.js";
+   import { localize } from "../../../lib/utils.js";
+   import Ping from "../../Components/Ping.svelte";
+   import { getSetting } from "../../../lib/settings.js";
+   import { openArchiveApp } from "../../Archive/ArchiveApp.js";
 
    function toggleSpeakerLock() {
       if (get(overridingSpeaker)) {

@@ -1,18 +1,18 @@
 <script>
-   import "../app.css";
+   import "../../app.css";
    import IconMessages from "~icons/tabler/messages";
    import IconDots from "~icons/tabler/dots-vertical";
    import IconLockOpen from "~icons/tabler/lock-open";
    import IconLock from "~icons/tabler/lock";
    import { get, writable } from "svelte/store";
    import { onDestroy } from "svelte";
-   import { localize } from "../lib/utils.js";
-   import Tooltip from "./Components/Tooltip.svelte";
-   import { overridingSpeaker } from "../lib/getSpeakerOverride.js";
-   import Ping from "./Components/Ping.svelte";
-   import { getSetting } from "../lib/settings";
-   import Options from "./Options.svelte";
-   import Whisper from "./Whisper.svelte";
+   import { localize } from "../../lib/utils.js";
+   import Tooltip from "../Components/Tooltip.svelte";
+   import { overridingSpeaker } from "../../lib/getSpeakerOverride.js";
+   import Ping from "../Components/Ping.svelte";
+   import { getSetting } from "../../lib/settings.js";
+   import Options from "./Components/Options.svelte";
+   import Whisper from "./Components/Whisper.svelte";
 
    const speaker = writable(getSpeaker());
    const whispering = writable(false);
