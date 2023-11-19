@@ -43,6 +43,7 @@
   "scripts": {
     "build": "vite build",
     "dev": "vite",
-    "eslint": "eslint ."
+    "eslint": "eslint .",
+    "eslint-fix": "eslint . --fix"
   }
 }
