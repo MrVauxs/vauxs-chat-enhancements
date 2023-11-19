@@ -2,6 +2,8 @@ import { writable, get } from "svelte/store";
 
 export const overridingSpeaker = writable(false);
 
+CONFIG.VauxsChatEnhancements ??= {};
+
 Hooks.on("init", () => {
    if (typeof libWrapper === "function") {
       CONFIG.VauxsChatEnhancements.getSpeakerOverride = true;

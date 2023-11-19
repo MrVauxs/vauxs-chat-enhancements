@@ -3,29 +3,19 @@
 <script>
    export let elementRoot = void 0;
    import { ApplicationShell } from "#runtime/svelte/component/core";
-   import { getSetting } from "../../../lib/settings.js";
-   import { ChatArchiver } from "../../../lib/chatArchiver.js";
-
-   const archiveStore = getSetting("archives");
+   import ChatArchiver from "../../../lib/chatArchiver.js";
 
    const currentArchive = ChatArchiver.fromChatLog(true);
 
    const newArchive = {
-      name: Date.now(),
+      name: new Date(Date.now()).toDateString(),
       date: Date.now(),
       id: randomID(),
    };
 
    function addArchive() {
       console.log($currentArchive);
-      /* archiveStore.update((store) => {
-         store.push({
-            name: "New Archive",
-            date: Date.now(),
-            id: randomID(),
-         });
-         return store;
-      }); */
+      $currentArchive.createArchive(newArchive);
    }
 </script>
 

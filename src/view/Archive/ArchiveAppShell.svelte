@@ -7,11 +7,11 @@
    import { ApplicationShell } from "#runtime/svelte/component/core";
    import Archive from "./Components/Archive.svelte";
    import IconTrashbin from "~icons/tabler/trash";
-   import { localize } from "../../lib/utils";
+   import { localize } from "../../lib/utils.js";
+   import ChatArchiver from "../../lib/chatArchiver.js";
    import { openNewArchiveApp } from "./CreateNewArchive/NewArchive.js";
-   import { getSetting } from "../../lib/settings.js";
 
-   const archiveStore = getSetting("archives");
+   const archives = ChatArchiver.getArchives();
 
    function createArchive() {
       openNewArchiveApp();
@@ -32,12 +32,14 @@
    <div class="grid grid-cols-3 gap-1">
       <div class="col-span-1 flex flex-col relative">
          <div class="overflow-y-scroll scroll-gutter-sb h-[500px]">
-            {#if !$archiveStore.length}
-               <div class="text-center text-gray-400 pt-4">{localize("vce.archive.empty")}</div>
-            {/if}
-            {#each $archiveStore as item}
-               <Archive {...item} {openArchive} {exportArchive} {enableDeletion} />
-            {/each}
+            {#await archives}
+               Loading...
+            {:then archives}
+               {#each archives as path}
+                  <!-- <Archive {...await ChatArchiver.parseArchive(path)} {openArchive} {exportArchive} {enableDeletion} />-->
+                  aaaaaaaaaa
+               {/each}
+            {/await}
          </div>
          <div class="mt-2 flex-row inline-flex w-full absolute bottom-0 bg-pleasant-white">
             <button class="inside-button rounded-r-none" on:click={createArchive}>

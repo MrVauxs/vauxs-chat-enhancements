@@ -4,20 +4,17 @@
 
    export let name;
    export let date;
-   export let id;
+   // export let id;
    export let enableDeletion = false;
    export let openArchive = () => {};
    export let exportArchive = () => {};
 
    import { localize } from "../../../lib/utils.js";
    import { fade } from "svelte/transition";
-   import { getSetting } from "../../../lib/settings.js";
-
-   const archiveStore = getSetting("archives");
 
    function deleteArchive(event) {
       function remove() {
-         archiveStore.update((store) => store.filter((item) => item.id !== id));
+         // archiveStore.update((store) => store.filter((item) => item.id !== id));
       }
 
       if (event.shiftKey) {
