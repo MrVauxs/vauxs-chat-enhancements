@@ -61,6 +61,7 @@
    {localize("vce.controls.buttons.settings")}
 </button>
 
+<!-- Archive -->
 <button on:click={openArchiveApp}>
    {localize("vce.controls.buttons.archive")}
 </button>

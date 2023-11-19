@@ -2,15 +2,17 @@ import { SvelteApplication } from "#runtime/svelte/application";
 
 import ArchiveAppShell from "./ArchiveAppShell.svelte";
 
+let _existingApp;
+
 /**
  * Opens the Chat Archive Application or focuses it if it is already open.
  */
 export function openArchiveApp() {
-   CONFIG.VauxsChatEnhancements.archiveApp ??= false;
-   if (CONFIG.VauxsChatEnhancements.archiveApp) {
-      CONFIG.VauxsChatEnhancements.archiveApp.render(true, { focus: true });
+   _existingApp ??= false;
+   if (_existingApp) {
+      _existingApp.render(true, { focus: true });
    } else {
-      CONFIG.VauxsChatEnhancements.archiveApp = new ArchiveApplication().render(true, { focus: true });
+      _existingApp = new ArchiveApplication().render(true, { focus: true });
    }
 }
 

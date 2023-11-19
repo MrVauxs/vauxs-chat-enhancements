@@ -1,9 +1,11 @@
 import { TJSGameSettings } from "#runtime/svelte/store/fvtt/settings";
+import { get } from "svelte/store";
 import { ArchiveShim } from "../view/Archive/ArchiveApp.js";
 import { mId } from "./utils.js";
 
 export const settings = new TJSGameSettings(mId);
-export const getSetting = (setting) => settings.getStore(setting);
+export const getSetting = (setting, store = true) =>
+   store ? settings.getStore(setting) : get(settings.getStore(setting));
 
 const array = [
    {
@@ -15,7 +17,7 @@ const array = [
          scope: "client",
          config: false,
          type: Array,
-         default: ["settings"],
+         default: [],
       },
    },
    {
@@ -28,6 +30,21 @@ const array = [
          config: false,
          type: Array,
          default: [],
+      },
+   },
+   {
+      folder: mId,
+      namespace: mId,
+      key: "chatBar",
+      options: {
+         name: "vauxs-chat-enhancements.settings.chatBar.title",
+         hint: "vauxs-chat-enhancements.settings.chatBar.hint",
+         scope: "user",
+         config: true,
+         type: Boolean,
+         default: true,
+         // onChange: () => {},
+         requiresReload: true,
       },
    },
 ];

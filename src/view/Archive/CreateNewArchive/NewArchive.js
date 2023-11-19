@@ -2,15 +2,17 @@ import { SvelteApplication } from "#runtime/svelte/application";
 
 import NewArchiveShell from "./NewArchive.svelte";
 
+let _existingApp;
+
 /**
  * Opens the Chat Archive Application or focuses it if it is already open.
  */
 export function openNewArchiveApp() {
-   CONFIG.VauxsChatEnhancements.newArchiveApp ??= false;
-   if (CONFIG.VauxsChatEnhancements.newArchiveApp) {
-      CONFIG.VauxsChatEnhancements.newArchiveApp.render(true, { focus: true });
+   _existingApp ??= false;
+   if (_existingApp) {
+      _existingApp.render(true, { focus: true });
    } else {
-      CONFIG.VauxsChatEnhancements.newArchiveApp = new NewArchiveApplication().render(true, { focus: true });
+      _existingApp = new NewArchiveApplication().render(true, { focus: true });
    }
 }
 
@@ -34,18 +36,6 @@ export default class NewArchiveApplication extends SvelteApplication {
             target: document.body,
          },
       });
-   }
-}
-
-export class ArchiveShim extends FormApplication {
-   constructor(options = {}) {
-      super({}, options);
-
-      openNewArchiveApp();
-   }
-
-   render() {
-      this.close();
    }
 }
 

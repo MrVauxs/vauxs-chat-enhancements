@@ -19,7 +19,7 @@ const s_PACKAGE_ID = "modules/vauxs-chat-enhancements";
 // A short additional string to add to Svelte CSS hash values to make yours unique. This reduces the amount of
 // duplicated framework CSS overlap between many TRL packages enabled on Foundry VTT at the same time. 'tse' is chosen
 // by shortening 'template-svelte-esm'.
-const s_SVELTE_HASH_ID = "vce";
+// const s_SVELTE_HASH_ID = "vce";
 
 const s_COMPRESS = true; // Set to true to compress the module bundle.
 const s_SOURCEMAPS = true; // Generate sourcemaps for the bundle (recommended).

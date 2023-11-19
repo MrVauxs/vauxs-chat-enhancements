@@ -43,5 +43,19 @@ export function localize(key, format) {
    }
 }
 
+/**
+ * Creates a hook that is easy to clean up. Returns a function that can be called to remove the hook.
+ *
+ * @param {string} hookName - The name of the hook to create
+ *
+ * @param {Function} callback - The callback to run when the hook is triggered
+ *
+ * @returns {Function} deletion - The function to call to remove the hook
+ */
+export function createEasyHook(hookName, callback) {
+   const id = Hooks.on(hookName, callback);
+   return () => Hooks.off(hookName, id);
+}
+
 export const mId = "vauxs-chat-enhancements";
 

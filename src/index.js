@@ -11,11 +11,17 @@ CONFIG.VauxsChatEnhancements.NewArchiveApplication = NewArchiveApplication;
 
 // ==== Chat Controls ====
 import AboveChatControls from "./view/AboveChatControls.svelte";
+import { getSetting } from "./lib/settings.js";
 
 // eslint-disable-next-line no-unused-vars
 Hooks.on("renderChatLog", (chatlog, html, args) => {
-   const chatControls = html[0].querySelector("#chat-controls");
-   chatlog._vauxsChatEnhancements = new AboveChatControls({ target: chatControls.parentElement, anchor: chatControls });
+   if (getSetting("chatBar", false)) {
+      const chatControls = html[0].querySelector("#chat-controls");
+      chatlog._vauxsChatEnhancements = new AboveChatControls({
+         target: chatControls.parentElement,
+         anchor: chatControls,
+      });
+   }
 });
 
 // eslint-disable-next-line no-unused-vars
