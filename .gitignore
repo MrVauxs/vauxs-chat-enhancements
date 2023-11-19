@@ -3,10 +3,9 @@
 .vite-cache/
 .vscode/**/*
 !.vscode/extensions.json
+!.vscode/settings.json.example
 dist/
 node_modules/
 /index.js
 /index.js.map
-/vauxs-ce.js
-/vauxs-ce.js.map
 /style.css
