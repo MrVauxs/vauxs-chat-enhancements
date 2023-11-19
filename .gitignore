@@ -3,7 +3,7 @@
 .vite-cache/
 .vscode/**/*
 !.vscode/extensions.json
-!.vscode/settings.json.example
+!.vscode/settings.example.json
 dist/
 node_modules/
 /index.js

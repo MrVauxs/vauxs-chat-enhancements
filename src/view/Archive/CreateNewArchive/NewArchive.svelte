@@ -66,7 +66,11 @@
          <input class="right-0" type="checkbox" id="all-chat" bind:checked={deleteMessages} />
       </div>
    </div>
-   <button class="max-h-8 inside-button" on:click={async () => await addArchive()}>
+   <button
+      class="max-h-8 inside-button"
+      on:click={async () => await addArchive()}
+      disabled={!$archive.chatMessages.length}
+   >
       {localize("vce.archive.button", { count: $archive.chatMessages.length })}
    </button>
 </ApplicationShell>
