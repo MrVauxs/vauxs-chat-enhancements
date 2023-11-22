@@ -21,12 +21,18 @@
       }
    }
 
-   function openArchive() {
-      ui.notifications.info("openArchive");
+   let archive = null;
+
+   function openArchive(item) {
+      archive = item;
    }
 
    function exportArchive() {
       ui.notifications.info("export");
+   }
+
+   function cleanup(string) {
+      return string.replaceAll(/<a aria-label="Delete" class="message-delete">.+<\/a>/g, "");
    }
 </script>
 
@@ -38,7 +44,7 @@
                Loading...
             {:then}
                {#each $archiveStore as item}
-                  <Archive {...item} {openArchive} {exportArchive} />
+                  <Archive {...item} {exportArchive} openArchive={() => openArchive(item)} />
                {/each}
             {/await}
          </div>
@@ -62,9 +68,18 @@
             <!-- search -->
             search row
          </div>
+         <!-- TODO: disable tailwind for messages! -->
          <div class="flex-1 overflow-y-scroll">
-            <!-- await (new ChatMessage(game.messages.contents[0])).getHTML() -->
-            content
+            <!-- svelte-ignore missing-declaration -->
+            {#if archive}
+               {#each archive.messages as mes}
+                  {#await new ChatMessage(mes).getHTML() then message}
+                     {#each message as html}
+                        {@html cleanup(html.outerHTML)}
+                     {/each}
+                  {/await}
+               {/each}
+            {/if}
          </div>
          <div>
             <!-- pagination -->

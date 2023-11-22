@@ -9,7 +9,7 @@
    const archive = ChatArchiver.fromChatLog(true);
 
    async function addArchive() {
-      console.log(await $archive.createArchive(deleteMessages));
+      $archive.createArchive(deleteMessages);
    }
 
    let all = true;
