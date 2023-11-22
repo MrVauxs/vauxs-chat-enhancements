@@ -63,22 +63,24 @@
             </button>
          </div>
       </div>
-      <div class="p-2 col-span-3 border rounded-sm border-foundry-border-dark-primary flex flex-col h-full">
+      <!-- TODO: FIX OVERFLOW!!!!!!!!!! -->
+      <div class="p-2 col-span-3 border rounded-sm border-foundry-border-dark-primary flex flex-col">
          <div class="flex-grow-0 flex-shrink flex-auto">
             <!-- search -->
             search row
          </div>
-         <!-- TODO: disable tailwind for messages! -->
          <div class="flex-1 overflow-y-scroll">
             <!-- svelte-ignore missing-declaration -->
             {#if archive}
-               {#each archive.messages as mes}
+               {#each { ...archive.messages, length: archive.messages.length <= 10 ? archive.messages.length : 10 } as mes}
                   {#await new ChatMessage(mes).getHTML() then message}
                      {#each message as html}
                         {@html cleanup(html.outerHTML)}
                      {/each}
                   {/await}
                {/each}
+            {:else}
+               No Archive Selected
             {/if}
          </div>
          <div>

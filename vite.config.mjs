@@ -53,7 +53,10 @@ export default () => {
                // Some plugins, like tailwindcss/nesting, need to run before Tailwind,
                tailwindcss,
                // But others, like autoprefixer, need to run after,
-               postcssPrefixSelector({ prefix: ".vce", exclude: [new RegExp("vce.+")] }),
+               postcssPrefixSelector({
+                  prefix: ":where(.vce)",
+                  exclude: [new RegExp("vce.+")],
+               }),
                autoprefixer,
                postcssPresetEnv,
                cssnano,

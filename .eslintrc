@@ -12,7 +12,8 @@
 
   // Defines / overrides a few more environment parameters not provided in the configs above.
   "env": {
-    "jquery": true
+    "jquery": true,
+    "node": true
   },
 
   "globals": {

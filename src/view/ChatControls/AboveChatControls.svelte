@@ -91,7 +91,7 @@
             <Ping condition={$whispering}>
                <button
                   id="whisperTo"
-                  class="hover:bg-foundry-checkbox-checked click"
+                  class="hover:bg-foundry-checkbox-checked click border-none"
                   on:click={toggleTooltip.whisper}
                   bind:this={tooltipButton.whisper}
                >
@@ -108,7 +108,7 @@
                <Ping condition={$overridingSpeaker}>
                   <button
                      id="lockSpeaker"
-                     class="hover:bg-foundry-checkbox-checked click"
+                     class="hover:bg-foundry-checkbox-checked click border-none"
                      on:click={toggleSpeakerLock}
                      data-tooltip-direction="UP"
                      data-tooltip={localize("vce.controls.buttons.lockSpeaker")}
@@ -126,7 +126,7 @@
             <Ping condition={$overridingSpeaker || $whispering}>
                <button
                   id="options"
-                  class="relative hover:bg-foundry-checkbox-checked click"
+                  class="relative hover:bg-foundry-checkbox-checked click border-none"
                   on:click={toggleTooltip.options}
                   bind:this={tooltipButton.options}
                >

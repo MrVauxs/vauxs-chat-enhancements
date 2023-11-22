@@ -14,7 +14,7 @@
    <div class="text-base text-left">{name}</div>
    <footer class="flex text-xs">
       <button
-         class="m-0 p-0 text-center w-min"
+         class="m-0 p-0 text-center w-min border-none"
          data-tooltip={localize("vce.archive.export")}
          on:click|stopPropagation={exportArchive}
       >
