@@ -10,6 +10,7 @@
    import { localize } from "../../lib/utils.js";
    import ChatArchiver from "../../lib/chatArchiver.js";
    import { openNewArchiveApp } from "./CreateNewArchive/NewArchive.js";
+   import { getSetting } from "../../lib/settings.js";
 
    const archiveStore = ChatArchiver.getArchives(true);
 
@@ -23,6 +24,8 @@
 
    let archive = null;
 
+   $: if (getSetting("loadLastArchive", false) && $archiveStore.length) archive = $archiveStore[0];
+
    function openArchive(item) {
       archive = item;
    }
@@ -34,6 +37,12 @@
    function cleanup(string) {
       return string.replaceAll(/<a aria-label="Delete" class="message-delete">.+<\/a>/g, "");
    }
+
+   import { paginate, PaginationNav } from "svelte-paginate";
+   let currentPage = 1;
+   let pageSize = 8;
+   let paginatedItems = [];
+   $: if (archive) paginatedItems = paginate({ items: archive.messages, pageSize, currentPage });
 </script>
 
 <ApplicationShell bind:elementRoot transition={import.meta.env.DEV ? null : blur} transitionOptions={{ duration: 500 }}>
@@ -64,29 +73,62 @@
          </div>
       </div>
       <!-- TODO: FIX OVERFLOW!!!!!!!!!! -->
-      <div class="p-2 col-span-3 border rounded-sm border-foundry-border-dark-primary flex flex-col">
-         <div>
-            <!-- search -->
-            search row
-         </div>
-         <div class="overflow-y-auto h-[500px]">
-            <!-- svelte-ignore missing-declaration -->
-            {#if archive}
-               {#each { ...archive.messages, length: archive.messages.length <= 10 ? archive.messages.length : 10 } as mes}
+      <div class="p-2 col-span-3 border rounded-sm border-foundry-border-dark-primary flex flex-col max-h-[554px]">
+         {#if archive}
+            <div class="h-6">
+               <!-- search -->
+               search row
+            </div>
+            <div class="overflow-y-auto h-full">
+               {#each paginatedItems as mes}
+                  <!-- svelte-ignore missing-declaration -->
                   {#await new ChatMessage(mes).getHTML() then message}
                      {#each message as html}
                         {@html cleanup(html.outerHTML)}
                      {/each}
                   {/await}
                {/each}
-            {:else}
-               No Archive Selected
-            {/if}
-         </div>
-         <div>
-            <!-- pagination -->
-            paginate row
-         </div>
+            </div>
+            <div class="pagination mt-2 flex">
+               <!-- pagination -->
+               <PaginationNav
+                  totalItems={archive.messages.length}
+                  {pageSize}
+                  {currentPage}
+                  limit={1}
+                  showStepOptions={true}
+                  on:setPage={(e) => (currentPage = e.detail.page)}
+               />
+               <div class="ml-auto">
+                  <input
+                     class="!text-center !w-6"
+                     type="number"
+                     min="1"
+                     max={archive.messages.length}
+                     bind:value={pageSize}
+                     data-tooltip="Change Amount of Rendered Messages"
+                  />
+               </div>
+            </div>
+         {:else}
+            No Archive Selected
+         {/if}
       </div>
    </div>
 </ApplicationShell>
+
+<style lang="postcss">
+   .pagination :global(.pagination-nav) {
+      @apply flex flex-row justify-center items-center;
+   }
+   .pagination :global(.option) {
+      @apply px-2;
+   }
+   .pagination :global(.option.active) {
+      @apply text-blue-500 shadow-[inset_0_2px_4px_0_rgb(0,0,0,0.2)];
+   }
+   .pagination :global(.option.disabled) {
+      opacity: 0.3;
+      filter: grayscale(100%);
+   }
+</style>

@@ -2,11 +2,10 @@ import { writable } from "svelte/store";
 import { createEasyHook, slugify } from "./utils";
 
 export default class ChatArchiver {
-   constructor(messages, { name, date, description } = {}) {
+   constructor(messages, { name, description } = {}) {
       this._ogMessages = messages;
       this.chatMessages = messages;
       this.name = name ?? new Date(Date.now()).toDateString();
-      this.date = date ?? Date.now();
       this.description = description ?? "";
    }
 
@@ -41,7 +40,7 @@ export default class ChatArchiver {
    createArchive(deleteMessages = false) {
       const data = {
          name: this.name,
-         date: this.date,
+         date: Date.now(),
          description: this.description,
          id: randomID(),
          messages: this.toJSON(),
@@ -144,7 +143,11 @@ export default class ChatArchiver {
             },
          };
       }
-      return ChatArchiver.getFiles().then((res) => Promise.all(res.map((path) => ChatArchiver.parsePathJSON(path))));
+      return ChatArchiver.getFiles().then((res) =>
+         Promise.all(res.map((path) => ChatArchiver.parsePathJSON(path))).then((jsons) =>
+            jsons.sort((a, b) => a.date - b.date)
+         )
+      );
    }
 }
 

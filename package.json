@@ -31,6 +31,7 @@
     "eslint": "^8",
     "postcss": "^8.4.24",
     "postcss-load-config": "^4.0.1",
+    "svelte-paginate": "^0.1.0",
     "svelte-preprocess": "^5",
     "tailwindcss": "^3.3.2",
     "unplugin-icons": "^0.17.3",

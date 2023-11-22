@@ -4,11 +4,6 @@
 @tailwind utilities;
 
 @layer base {
-  [disabled]:not([disabled="false"]) {
-    opacity: 0.6;
-    filter: grayscale(100%);
-    @apply hover:!shadow-none;
-  }
 }
 
 @layer utilities {
@@ -18,6 +13,12 @@
 
   .scroll-gutter-sb {
     scrollbar-gutter: stable both-edges;
+  }
+
+  [disabled]:not([disabled="false"]) {
+    opacity: 0.6;
+    filter: grayscale(100%);
+    @apply hover:!shadow-none;
   }
 }
 

@@ -1,11 +1,10 @@
 import { TJSGameSettings } from "#runtime/svelte/store/fvtt/settings";
-import { get } from "svelte/store";
 import { ArchiveShim } from "../view/Archive/ArchiveApp.js";
 import { mId } from "./utils.js";
 
 export const settings = new TJSGameSettings(mId);
 export const getSetting = (setting, store = true) =>
-   store ? settings.getStore(setting) : get(settings.getStore(setting));
+   store ? settings.getStore(setting) : game.settings.get(mId, setting);
 
 const array = [
    {
@@ -31,6 +30,19 @@ const array = [
          config: true,
          type: Boolean,
          default: true,
+      },
+   },
+   {
+      folder: mId,
+      namespace: mId,
+      key: "loadLastArchive",
+      options: {
+         name: "vauxs-chat-enhancements.settings.loadLastArchive.title",
+         hint: "vauxs-chat-enhancements.settings.loadLastArchive.hint",
+         scope: "user",
+         config: true,
+         type: Boolean,
+         default: false,
       },
    },
 ];

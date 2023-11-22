@@ -18,6 +18,10 @@
       "chatBar": {
         "title": "Show Chat Bar",
         "hint": "Show the \"Speaking As\" bar above the chat box."
+      },
+      "loadLastArchive": {
+        "title": "Auto-Load Last Archive",
+        "hint": "Automatically load the last chat archive when opening the chat archive window."
       }
     },
     "archive": {
