@@ -65,11 +65,11 @@
       </div>
       <!-- TODO: FIX OVERFLOW!!!!!!!!!! -->
       <div class="p-2 col-span-3 border rounded-sm border-foundry-border-dark-primary flex flex-col">
-         <div class="flex-grow-0 flex-shrink flex-auto">
+         <div>
             <!-- search -->
             search row
          </div>
-         <div class="flex-1 overflow-y-scroll">
+         <div class="overflow-y-auto h-[500px]">
             <!-- svelte-ignore missing-declaration -->
             {#if archive}
                {#each { ...archive.messages, length: archive.messages.length <= 10 ? archive.messages.length : 10 } as mes}
