@@ -145,8 +145,9 @@ export default class ChatArchiver {
       }
       return ChatArchiver.getFiles().then((res) =>
          Promise.all(res.map((path) => ChatArchiver.parsePathJSON(path))).then((jsons) =>
-            jsons.sort((a, b) => a.date - b.date)
+            jsons.sort((a, b) => a.date - b.date).map((json) => ({ ...json, _ogMessages: json.messages }))
          )
       );
    }
 }
+

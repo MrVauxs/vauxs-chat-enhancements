@@ -27,6 +27,7 @@
    $: if (getSetting("loadLastArchive", false) && $archiveStore.length) archive = $archiveStore[0];
 
    function openArchive(item) {
+      if (CONFIG.debug.vce) console.log(item);
       archive = item;
    }
 
@@ -43,6 +44,20 @@
    let pageSize = 8;
    let paginatedItems = [];
    $: if (archive) paginatedItems = paginate({ items: archive.messages, pageSize, currentPage });
+
+   let searchText = "";
+
+   $: if (searchText.length) {
+      archive.messages = archive._ogMessages.filter((mes) => {
+         const message = new ChatMessage(mes);
+         return (
+            message.content.toLowerCase().includes(searchText.toLowerCase()) ||
+            message.flavor.toLowerCase().includes(searchText.toLowerCase())
+         );
+      });
+   } else if (archive) {
+      archive.messages = archive._ogMessages;
+   }
 </script>
 
 <ApplicationShell bind:elementRoot transition={import.meta.env.DEV ? null : blur} transitionOptions={{ duration: 500 }}>
@@ -75,9 +90,9 @@
       <!-- TODO: FIX OVERFLOW!!!!!!!!!! -->
       <div class="p-2 col-span-3 border rounded-sm border-foundry-border-dark-primary flex flex-col max-h-[554px]">
          {#if archive}
-            <div class="h-6">
+            <div class="mb-2 flex flex-row">
                <!-- search -->
-               search row
+               <input type="text" contenteditable="true" bind:value={searchText} placeholder="Search..." />
             </div>
             <div class="overflow-y-auto h-full">
                {#each paginatedItems as mes}
