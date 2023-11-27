@@ -70,11 +70,11 @@
 <div class="vce vce-main-div" transition:fly={{ y: 50, duration: 750 }}>
    <div class="border border-foundry-border-light-primary rounded-md p-0.5 my-1">
       <div class="grid-cols-5 grid h-8">
-         <div id="icon" class="col-span-1 ml-0.5 hover:scale-110 transition-transform">
+         <div id="icon" class="col-span-1 ml-0.5">
             <img
                src={$speaker.img}
                alt={$speaker.alias}
-               class="w-8 h-8 object-contain"
+               class="w-8 h-8 object-contain border-none"
                style="transform: scale({$speaker.scale});"
             />
          </div>
