@@ -3,6 +3,16 @@ import { ArchiveShim } from "../view/Archive/ArchiveApp.js";
 import { mId } from "./utils.js";
 
 export const settings = new TJSGameSettings(mId);
+
+/**
+ * Get a setting store, or the game setting value itself.
+ *
+ * @param {string} setting - The setting to get.
+ *
+ * @param {boolean} store - Whether to get the store or the game setting value.
+ *
+ * @returns {*} - The setting store or the game setting value.
+ */
 export const getSetting = (setting, store = true) =>
    store ? settings.getStore(setting) : game.settings.get(mId, setting);
 
