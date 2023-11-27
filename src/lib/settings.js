@@ -45,6 +45,23 @@ const array = [
          default: false,
       },
    },
+   {
+      folder: mId,
+      namespace: mId,
+      key: "speakerMode",
+      options: {
+         name: "vauxs-chat-enhancements.settings.speakerMode.title",
+         hint: "vauxs-chat-enhancements.settings.speakerMode.hint",
+         scope: "user",
+         config: true,
+         type: Number,
+         choices: {
+            0: "vauxs-chat-enhancements.settings.speakerMode.choices.0", // Default (In-Character when Assigned or Selected)
+            1: "vauxs-chat-enhancements.settings.speakerMode.choices.1", // Never Speak as PC
+            2: "vauxs-chat-enhancements.settings.speakerMode.choices.2", // Always Out-of-Character
+         },
+      },
+   },
 ];
 
 Hooks.on("init", () => {

@@ -150,6 +150,3 @@ export default class ChatArchiver {
       );
    }
 }
-
-CONFIG.VauxsChatEnhancements.ChatArchiver = ChatArchiver;
-
