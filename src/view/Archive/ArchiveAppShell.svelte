@@ -87,7 +87,6 @@
             </button>
          </div>
       </div>
-      <!-- TODO: FIX OVERFLOW!!!!!!!!!! -->
       <div class="p-2 col-span-3 border rounded-sm border-foundry-border-dark-primary flex flex-col max-h-[554px]">
          {#if archive}
             <div class="mb-2 flex flex-row">
