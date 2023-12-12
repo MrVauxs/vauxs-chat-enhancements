@@ -27,7 +27,13 @@ Hooks.on("init", () => {
             let result = wrapped(...args);
 
             if (CONFIG.debug.vce) {
-               console.log(`%cVauxs Chat Enhancements`, "color:#53b0cf", result);
+               console.log(
+                  `%cVauxs Chat Enhancements%c, | %Original getSpeaker()`,
+                  "color:#53b0cf",
+                  "",
+                  "color:yellow",
+                  result
+               );
             }
 
             /**
@@ -36,15 +42,16 @@ Hooks.on("init", () => {
              * @returns {void} - Overrides the speaker with the value of overridingSpeaker store.
              */
             function override(overrider) {
+               result = { ...result, ...overrider };
                if (CONFIG.debug.vce) {
                   console.log(
                      `%cVauxs Chat Enhancements%c | Overriding Speaker to %c${overrider.alias}`,
                      "color:#53b0cf",
                      "",
-                     "color:yellow"
+                     "color:yellow",
+                     result
                   );
                }
-               result = { ...result, ...overrider };
             }
             // #endregion
 
