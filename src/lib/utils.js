@@ -60,7 +60,7 @@ export function createEasyHook(hookName, callback) {
 /**
  * Returns a slugified version of the string.
  *
- * @param str - The string to slugify
+ * @param {string} str - The string to slugify
  *
  * @returns {string} - The slugified string
  */

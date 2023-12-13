@@ -1,20 +1,9 @@
 <script>
    import IconBookmarkPlus from "~icons/tabler/bookmark-plus";
    import IconBookmarkFilled from "~icons/tabler/bookmark-filled";
-   import { get } from "svelte/store";
-   import { overridingSpeaker } from "../../../lib/getSpeakerOverride.js";
    import { localize } from "../../../lib/utils.js";
-   import Ping from "../../Components/Ping.svelte";
    import { getSetting } from "../../../lib/settings.js";
    import { openArchiveApp } from "../../Archive/ArchiveApp.js";
-
-   function toggleSpeakerLock() {
-      if (get(overridingSpeaker)) {
-         overridingSpeaker.set(false);
-      } else {
-         overridingSpeaker.set(ChatMessage.getSpeaker());
-      }
-   }
 
    const getSpeakerOverride = !CONFIG.VauxsChatEnhancements.getSpeakerOverride;
 
@@ -29,7 +18,7 @@
 
 <!-- Lock Speaker -->
 <div class="grid grid-cols-10 gap-0">
-   <Ping condition={$overridingSpeaker} classes="col-span-9">
+   <!-- <Ping condition={$overridingSpeaker} classes="col-span-9">
       <button
          class="rounded-r-none"
          on:click={toggleSpeakerLock}
@@ -53,6 +42,7 @@
          <IconBookmarkPlus class="w-2 scale-200 mx-auto" />
       {/if}
    </button>
+    -->
 </div>
 
 <!-- Settings -->
