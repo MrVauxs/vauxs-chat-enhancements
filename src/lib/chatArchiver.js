@@ -1,5 +1,6 @@
 import { writable } from "svelte/store";
 import { createEasyHook, slugify } from "./utils";
+import { getSetting } from "./settings";
 
 export default class ChatArchiver {
 	constructor(messages, { name, description } = {}) {
@@ -80,19 +81,14 @@ export default class ChatArchiver {
 	}
 
 	static async parseDFCE(path, isFine = false) {
+		const fixedPath = isFine ? path : encodeURI(path);
 		ui.notifications.error("Error parsing JSON message archive file! Attempting to parse it as a DFCE file...");
-		const response = await fetch(isFine ? path : encodeURI(path));
+
+		const response = await fetch(fixedPath);
 		if (response.ok) {
 			const messages = await response.json();
 
-			// FIXME: MAKE THIS LESS PRONE TO EXPLODING THE SERVER BY GIVING IN AND STORING THE INFORMATION IN THE SETTINGS
-			// Its unlikely to happen but there is a chance that someone will be brilliant enough to put spaces in the file names
-			// of the archives and then I will be unable to overwrite them to mark them as "parsed" using this method
-			// resulting in an infinite loop of json creation and uploads.
-			// Because of course Foundry automatically parses the file names to include URL encoding,
-			// so I cannot physically touch anything with illegal characters inside the server.
-
-			if (!messages.DFCEparsed) {
+			if (!getSetting("dfceArchivesParsed", false).includes(fixedPath)) {
 				ui.notifications.notify("Successfully parsed DFCE file! Creating a new archive.");
 
 				new ChatArchiver(messages, {
@@ -100,13 +96,7 @@ export default class ChatArchiver {
 					description: `DF Chat Enhancements`,
 				}).createArchive();
 
-				const file = new File([JSON.stringify({ DFCEparsed: true, messages })], path, {
-					type: "application/json",
-				});
-
-				FilePicker.upload("data", ChatArchiver.chatPath(), file).then(() => {
-					ui.notifications.notify("Successfully converted the archive!");
-				});
+				getSetting("dfceArchivesParsed").set([...getSetting("dfceArchivesParsed", false), fixedPath]);
 			} else {
 				ui.notifications.warn(
 					`The file ${path} has already been parsed! Please remove it from the chat-archive folder.`

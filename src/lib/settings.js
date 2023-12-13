@@ -20,6 +20,17 @@ const array = [
 	{
 		folder: mId,
 		namespace: mId,
+		key: "dfceArchivesParsed",
+		options: {
+			scope: "world",
+			config: false,
+			type: Array,
+			default: [],
+		},
+	},
+	{
+		folder: mId,
+		namespace: mId,
 		key: "chatBar",
 		options: {
 			name: "vauxs-chat-enhancements.settings.chatBar.title",
