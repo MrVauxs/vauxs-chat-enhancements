@@ -85,6 +85,13 @@ export default class ChatArchiver {
 		if (response.ok) {
 			const messages = await response.json();
 
+			// FIXME: MAKE THIS LESS PRONE TO EXPLODING THE SERVER BY GIVING IN AND STORING THE INFORMATION IN THE SETTINGS
+			// Its unlikely to happen but there is a chance that someone will be brilliant enough to put spaces in the file names
+			// of the archives and then I will be unable to overwrite them to mark them as "parsed" using this method
+			// resulting in an infinite loop of json creation and uploads.
+			// Because of course Foundry automatically parses the file names to include URL encoding,
+			// so I cannot physically touch anything with illegal characters inside the server.
+
 			if (!messages.DFCEparsed) {
 				ui.notifications.notify("Successfully parsed DFCE file! Creating a new archive.");
 
