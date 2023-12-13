@@ -79,9 +79,9 @@ export default class ChatArchiver {
 		});
 	}
 
-	static async parseDFCE(path) {
+	static async parseDFCE(path, isFine = false) {
 		ui.notifications.error("Error parsing JSON message archive file! Attempting to parse it as a DFCE file...");
-		const response = await fetch(encodeURI(path));
+		const response = await fetch(isFine ? path : encodeURI(path));
 		if (response.ok) {
 			const messages = await response.json();
 
@@ -89,7 +89,7 @@ export default class ChatArchiver {
 				ui.notifications.notify("Successfully parsed DFCE file! Creating a new archive.");
 
 				new ChatArchiver(messages, {
-					name: decodeURI(path).replace(".json", "").split("chat-archive/").pop(),
+					name: decodeURI(decodeURI(path)).replace(".json", "").split("chat-archive/").pop(),
 					description: `DF Chat Enhancements`,
 				}).createArchive();
 
@@ -117,7 +117,11 @@ export default class ChatArchiver {
 		if (!response.ok) {
 			return await ChatArchiver.parseDFCE(path);
 		}
-		return await response.json();
+		const json = await response.json();
+		if (Array.isArray(json)) {
+			return await ChatArchiver.parseDFCE(path, true);
+		}
+		return json;
 	}
 
 	static scrollToMessage(message) {
@@ -185,7 +189,6 @@ export default class ChatArchiver {
 					.filter((dfce) => !Array.isArray(dfce) && !dfce.DFCEparsed)
 					.sort((a, b) => a.date - b.date)
 					.map((json) => {
-						console.log(json);
 						return { ...json, _ogMessages: json.messages };
 					})
 			)
