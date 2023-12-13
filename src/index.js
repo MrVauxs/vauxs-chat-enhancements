@@ -3,6 +3,7 @@ CONFIG.VauxsChatEnhancements = {};
 // ==== Run on Startup ====
 import "./lib/settings.js";
 import "./lib/speakerTracker.js";
+import "./lib/overrideMessage.js";
 import "./view/ChatControls/Wrapper.js";
 
 import ArchiveApplication from "./view/Archive/ArchiveApp.js";

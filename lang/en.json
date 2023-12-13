@@ -1,47 +1,50 @@
 {
-  "vauxs-chat-enhancements": {
-    "controls": {
-      "buttons": {
-        "lockSpeaker": "Lock Your Current Speaker",
-        "unlockSpeaker": "Unlock Your Current Speaker",
-        "settings": "Open Settings",
-        "getSpeakerOverride": "Requires libWrapper which is not enabled!",
-        "whisperTo": "Whisper to...",
-        "archive": "Open Chat Archive"
-      }
-    },
-    "settings": {
-      "archive": {
-        "title": "Chat Archive",
-        "hint": "Open the chat archive in a new window."
-      },
-      "chatBar": {
-        "title": "Show Chat Bar",
-        "hint": "Show the \"Speaking As\" bar above the chat box."
-      },
-      "loadLastArchive": {
-        "title": "Auto-Load Last Archive",
-        "hint": "Automatically load the last chat archive when opening the chat archive window."
-      },
-      "speakerMode": {
-        "title": "Speaker Mode",
-        "hint": "Changes the default behavior of your chat messages and who you speak as. The default behavior is to speak as your currently controlled token, or assigned character. The /ooc command overrides this behavior on a per-message basis.",
-        "choices": {
-          "0": "Default",
-          "1": "Never Speak as PC",
-          "2": "Always Out-of-Character"
-        }
-      }
-    },
-    "archive": {
-      "title": "Chat Archive",
-      "time": "{date} at {time}",
-      "empty": "No archives to display!",
-      "export": "Export Chat Archive to File",
-      "create": "Create New Chat Archive",
-      "cantDelete": "Due to security reasons, FoundryVTT does not allow deleting files from the server. <p/> You have to manually go to the {path} and delete the archive!",
-      "button": "Archive {count} Messages",
-      "scroll": "Scroll to Message"
-    }
-  }
+	"vauxs-chat-enhancements": {
+		"controls": {
+			"buttons": {
+				"lockSpeaker": {
+					"0": "Lock Your Current Speaker",
+					"1": "Unlock Your Current Speaker",
+					"2": "You are prevented to change your speaker from your Speaker Mode settings!"
+				},
+				"settings": "Open Settings",
+				"getSpeakerOverride": "Requires libWrapper which is not enabled!",
+				"whisperTo": "Whisper to...",
+				"archive": "Open Chat Archive"
+			}
+		},
+		"settings": {
+			"archive": {
+				"title": "Chat Archive",
+				"hint": "Open the chat archive in a new window."
+			},
+			"chatBar": {
+				"title": "Show Chat Bar",
+				"hint": "Show the \"Speaking As\" bar above the chat box."
+			},
+			"loadLastArchive": {
+				"title": "Auto-Load Last Archive",
+				"hint": "Automatically load the last chat archive when opening the chat archive window."
+			},
+			"speakerMode": {
+				"title": "Speaker Mode",
+				"hint": "Changes the default behavior of your chat messages and who you speak as. The default behavior is to speak as your currently controlled token, or assigned character. The /ooc command overrides this behavior on a per-message basis.",
+				"choices": {
+					"0": "Default",
+					"1": "Never Speak as PC",
+					"2": "Always Out-of-Character"
+				}
+			}
+		},
+		"archive": {
+			"title": "Chat Archive",
+			"time": "{date} at {time}",
+			"empty": "No archives to display!",
+			"export": "Export Chat Archive to File",
+			"create": "Create New Chat Archive",
+			"cantDelete": "Due to security reasons, FoundryVTT does not allow deleting files from the server. <p/> You have to manually go to the {path} and delete the archive!",
+			"button": "Archive {count} Messages",
+			"scroll": "Scroll to Message"
+		}
+	}
 }
